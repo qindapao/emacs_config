@@ -109,6 +109,7 @@
                           spaceline
                           helm-rg
                           helm-projectile
+                          citre
                           ))
 
 (dolist (package my-package-list)
@@ -119,6 +120,9 @@
 ;; 默认情况下，将TAB替换为4个空格
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
+
+;; 大小写字母和下划线作为一个整体
+; (global-subword-mode 1)
 
 ;; 自动加载文件变化
 (global-auto-revert-mode t)
@@ -163,7 +167,7 @@
 ;; 隐藏水平滚动条
 (horizontal-scroll-bar-mode -1)
 ; (global-yascroll-bar-mode 1)   ;; 暂时不用这个，用系统的滚动条
-(add-to-list 'default-frame-alist '(scroll-bar-width . 6))
+(add-to-list 'default-frame-alist '(scroll-bar-width . 18))
 ;; 智能滚动条====}
 
 
@@ -646,6 +650,9 @@
   :after ivy
   :config (counsel-mode))
 
+;; 用fd替换fzf(:TODO:当前遇到问题无法搜索)
+;; (setq counsel-fzf-cmd "fd --type f --hidden --follow --exclude .git --color never '%s'")
+
 ;; 标签页的映射
 ;; 关闭其它标签页不要提醒
 
@@ -918,20 +925,20 @@ EVENT is the mouse event."
 (define-key evil-normal-state-map (kbd "\\vc") 'vdiff-magit-compare)
 
 
-; C-c h	vdiff-hydra/body	输入 vdiff-Hydra
-; C-c r	vdiff-receive-changes	从其他缓冲区接收更改
-; C-c R	vdiff-receive-changes-and-step	C-c r和当时一样C-c n
-; C-c s	vdiff-send-changes	将此更改发送到其他缓冲区
-; C-c S	vdiff-send-changes-and-step	C-c s和当时一样C-c n
-; C-c f	vdiff-refine-this-hunk	突出显示 hunk 中更改的单词
-; C-c x	vdiff-remove-refinements-in-hunk	删除细化突出显示
+; , h	vdiff-hydra/body	输入 vdiff-Hydra
+; , r	vdiff-receive-changes	从其他缓冲区接收更改
+; , R	vdiff-receive-changes-and-step	C-c r和当时一样C-c n
+; , s	vdiff-send-changes	将此更改发送到其他缓冲区
+; , S	vdiff-send-changes-and-step	C-c s和当时一样C-c n
+; , f	vdiff-refine-this-hunk	突出显示 hunk 中更改的单词
+; , x	vdiff-remove-refinements-in-hunk	删除细化突出显示
 ; （没有任何）	vdiff-refine-this-hunk-symbol	根据符号进行细化
 ; （没有任何）	vdiff-refine-this-hunk-word	根据文字进行细化
-; C-c F	vdiff-refine-all-hunks	突出显示更改的单词
+; , F	vdiff-refine-all-hunks	突出显示更改的单词
 ; （没有任何）	vdiff-refine-all-hunks-symbol	根据符号细化所有内容
 ; （没有任何）	vdiff-refine-all-hunks-word	一切以文字为基础进行细化
-; C-c u	vdiff-refresh	强制刷新差异
-; C-c q	vdiff-quit	退出vdiff
+; , u	vdiff-refresh	强制刷新差异
+; , q	vdiff-quit	退出vdiff
 
 
 
@@ -961,7 +968,7 @@ EVENT is the mouse event."
          (remote-name (nth 0 remote-name-branch-name))
          (branch-name (nth 1 remote-name-branch-name))
          (init-addr (shell-command-to-string "git config --get remote.origin.url"))
-         (middle-info (replace-regexp-in-string "codehub-dg-y.huawei.com:2222" "codehub-y.huawei.com" init-addr))
+         (middle-info (replace-regexp-in-string "xxxxhub-dg-y.xxx.com:2222" "xxxxhub-y.xxx.com" init-addr))
          (middle-info (nth 1 (split-string middle-info "@")))
          (middle-info (nth 0 (split-string middle-info ".git")))
          (get-adr (concat "https://" middle-info "/files?ref=" branch-name)))
@@ -1088,6 +1095,108 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
 ;; 为evil的普通模式绑定快捷键
 (evil-define-key 'normal global-map (kbd "\\eo") 'bottom-side-eshell) ; \eo用来打开eshell
 (evil-define-key 'normal global-map (kbd "\\ex") 'kill-eshell-buffer) ; \ex用来关闭eshell
+
+
+(add-to-list 'load-path "C:/Users/pc/AppData/Roaming/.emacs.d/clue")
+;; (https://github.com/AmaiKinono/clue)
+(require 'clue)
+(add-hook 'find-file-hook #'clue-auto-enable-clue-mode)
+
+(evil-define-key 'normal 'global (kbd "\\ccy") 'clue-copy)
+(evil-define-key 'normal 'global (kbd "\\ccp") 'clue-paste)
+;; evil 下可以直接 :!diagon Tree 这种方式调用外部程序
+
+
+(use-package citre
+  :defer t
+  :init
+  ;; This is needed in `:init' block for lazy load to work.
+  (require 'citre-config)
+  ;; Bind your frequently used commands.  Alternatively, you can define them
+  ;; in `citre-mode-map' so you can only use them when `citre-mode' is enabled.
+  (evil-define-key 'normal 'global (kbd "\\cj") 'citre-jump)
+  (evil-define-key 'normal 'global (kbd "\\cb") 'citre-jump-back)
+  (evil-define-key 'normal 'global (kbd "\\ca") 'citre-ace-peek)
+  (evil-define-key 'normal 'global (kbd "\\cp") 'citre-peek)
+  (evil-define-key 'normal 'global (kbd "\\cu") 'citre-update-this-tags-file)
+  (evil-define-key 'normal 'global (kbd "\\clp") 'citre-peek-paste-clue-link)
+  (evil-define-key 'normal 'global (kbd "\\cly") 'citre-peek-copy-clue-link)
+  
+  ;; 让evil的左右键失效,这样才能使用citre-peek的左右键还有分支查看
+  (define-key evil-motion-state-map (kbd "<left>") nil)
+  (define-key evil-motion-state-map (kbd "<right>") nil)
+  (define-key evil-motion-state-map (kbd "<up>") nil)
+  (define-key evil-motion-state-map (kbd "<down>") nil)
+  
+  
+  ; M-n, M-p: Next/prev line.                 ok
+  ; M-N, M-P: Next/prev definition.           ok(如果一个定义在多个源文件中,这里可以选择我们想要的那一个,然后按M-l f把它设置为第一个，然后就可以来回跳转了)
+  ; M-l j: Jump to the definition.            ok
+  ; M-l p: citre-peek-through                 ok
+  ; C-g: Close the peek window.               ok
+  ; C-l: 光标放到中央                         ok
+  ; <left>和<right> 在标记历史记录中移动
+  ; S-<up>和S-<down> 上下移动定义
+  ; M-l f 设定为第一个定义
+  ; M-l d 删除符号后的当前分支
+  ; M-l D 删除符号后的所有分支
+  ; citre-peek-save-session 只在当前session有效,并不保存磁盘
+  ; citre-peek-load-session 只在当前session有效,并不保存磁盘
+  
+  ;citre-peek-save-session
+  ;citre-peek-paste-clue-link
+  ;citre-peek-load-session
+  ;citre-peek                    ok
+  ;citre-peek-next-line          ok
+  ;citre-peek-prev-line          ok
+  ;citre-peek-move-current-tag-up
+  ;citre-peek-move-current-tag-down
+  ;citre-delete-branch
+  ;citre-peek-next-tag
+  ;citre-peek-prev-tag
+  ;citre-peek-reference
+  ;citre-jump-to-reference
+  ;citre-peek-make-current-tag-first
+  ;citre-peek-mode
+  ;citre-peek-copy-clue-link
+  ;citre-peek-next-branch
+  ;citre-ace-peek-reference
+  ;citre-peek-jump
+  ;citre-peek-restore
+  ;citre-peek-prev-branch
+  ;citre-peek-abort
+  ;citre-peek-chain-forward
+  ;citre-peek-chain-backward
+  ;citre-peek-through-reference
+  ;citre-peek-delete-branches
+  ;
+
+  :config
+  (setq
+   ;; Set these if readtags/ctags is not in your PATH.
+   citre-readtags-program "C:/Users/pc/.vim/ctags/readtags.exe"
+   citre-ctags-program "C:/Users/pc/.vim/ctags/ctags.exe"
+   ; 下面的设置并没有作用
+   citre-tags-files '(".citre_tags")
+   ;; Set these if gtags/global is not in your PATH (and you want to use the
+   ;; global backend)
+   ; citre-gtags-program "/path/to/gtags"
+   ; citre-global-program "/path/to/global"
+   ;; Set this if you use project management plugin like projectile.  It's
+   ;; used for things like displaying paths relatively, see its docstring.
+   ;; 这个也已经无效了
+   ; citre-project-root-function #'projectile-project-root
+   ;; Set this if you want to always use one location to create a tags file.
+   citre-default-create-tags-file-location 'global-cache
+   ;; See the "Create tags file" section above to know these options
+   ;; (这个已经无效了)
+   ; citre-use-project-root-when-creating-tags t
+   ; 询问生成哪种语言的ctags
+   citre-prompt-language-for-ctags-command t
+   ;; By default, when you open any file, and a tags file can be found for it,
+   ;; `citre-mode' is automatically enabled.  If you only want this to work for
+   ;; certain modes (like `prog-mode'), set it like this.
+   citre-auto-enable-citre-mode-modes '(prog-mode)))
 
 
 
