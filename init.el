@@ -39,6 +39,8 @@
 
 (advice-add 'counsel-locate :around #'counsel-locate-coding)
 
+(setenv "LC_ALL" "zh_CN.UTF-8")
+(setenv "LANG" "zh_CN.UTF-8")
 
 ;; 不用设置代理
 ; (setq url-proxy-services
@@ -128,6 +130,9 @@
 
 (require 'evil)
 (evil-mode 1)
+
+;; 开启全词搜索(不然下划线会认为不是单词一部分)
+(setq evil-symbol-word-search t)
 
 (require 'spaceline-config)
 (spaceline-spacemacs-theme)
@@ -412,14 +417,15 @@
 
 ;; :TODO: 使用citre补全框架和代码浏览框架(ctags和GUN Global更强大)
 
-;; Eglot(Tools->Eglot)
-;; :TODO: 研究Eglot的对应补全和其它功能
-(require 'eglot)
-(add-hook 'python-mode-hook 'eglot-ensure)
-;; :TODO: 为什么是这个？后面学习
-(add-hook 'python-ts-mode-hook 'eglot-ensure)
-(add-hook 'c-mode-common-hook 'eglot-ensure)
-(add-hook 'c-ts-mode-hook 'eglot-ensure)
+;; 暂时用不着lsp功能
+; ;; Eglot(Tools->Eglot)
+; ;; :TODO: 研究Eglot的对应补全和其它功能
+; (require 'eglot)
+; (add-hook 'python-mode-hook 'eglot-ensure)
+; ;; :TODO: 为什么是这个？后面学习
+; (add-hook 'python-ts-mode-hook 'eglot-ensure)
+; (add-hook 'c-mode-common-hook 'eglot-ensure)
+; (add-hook 'c-ts-mode-hook 'eglot-ensure)
 
 
 ;; ================================
@@ -872,7 +878,8 @@ EVENT is the mouse event."
 
 ;; 文件对比
 (require 'vdiff)
-(define-key vdiff-mode-map (kbd "C-c") vdiff-mode-prefix-map)
+; (define-key vdiff-mode-map (kbd "C-c") vdiff-mode-prefix-map)
+(evil-define-key 'normal vdiff-mode-map "," vdiff-mode-prefix-map)
 ;; vdiff和magit的结合===={
 (require 'vdiff-magit)
 (define-key magit-mode-map "e" 'vdiff-magit-dwim)
@@ -909,24 +916,31 @@ EVENT is the mouse event."
 (define-key evil-normal-state-map (kbd "\\vq") 'vdiff-quit)
 (define-key evil-normal-state-map (kbd "\\vm") 'magit)
 (define-key evil-normal-state-map (kbd "\\vc") 'vdiff-magit-compare)
-;; :TODO: hunk的撤销与重做,两边对比同步
 
 
-; n / p：跳转到下一个/上一个差异
-; N / P：跳转到下一个/上一个差异（在所有缓冲区中）
-; C-j / C-k：在当前差异中向下/向上移动
-; q：退出 vdiff 模式
-; g：刷新差异
-; f：刷新并对齐所有差异
-; = / RET：将当前差异的改动应用到另一边
-; C-c C-a：将所有差异的改动应用到另一边
-; C-c C-r：将当前差异的改动反向应用到另一边
-; C-c C-e：编辑当前差异
-; C-c C-s：切换是否显示细节
-; C-c C-n：切换是否显示行号
-; C-c C-w：切换是否折叠未更改的行
-; C-c C-d：切换是否显示词级别的差异
-; C-c C-t：切换三向比较模式
+; C-c h	vdiff-hydra/body	输入 vdiff-Hydra
+; C-c r	vdiff-receive-changes	从其他缓冲区接收更改
+; C-c R	vdiff-receive-changes-and-step	C-c r和当时一样C-c n
+; C-c s	vdiff-send-changes	将此更改发送到其他缓冲区
+; C-c S	vdiff-send-changes-and-step	C-c s和当时一样C-c n
+; C-c f	vdiff-refine-this-hunk	突出显示 hunk 中更改的单词
+; C-c x	vdiff-remove-refinements-in-hunk	删除细化突出显示
+; （没有任何）	vdiff-refine-this-hunk-symbol	根据符号进行细化
+; （没有任何）	vdiff-refine-this-hunk-word	根据文字进行细化
+; C-c F	vdiff-refine-all-hunks	突出显示更改的单词
+; （没有任何）	vdiff-refine-all-hunks-symbol	根据符号细化所有内容
+; （没有任何）	vdiff-refine-all-hunks-word	一切以文字为基础进行细化
+; C-c u	vdiff-refresh	强制刷新差异
+; C-c q	vdiff-quit	退出vdiff
+
+
+
+
+
+
+
+
+
 
 ;; magit的相关操作
 ;; magit-log-buffer-file
@@ -1056,6 +1070,24 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
       (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))))
 (define-key evil-normal-state-map (kbd "\\kob") 'kill-other-buffers-if-saved)
 
+;; eshell
+;; 定义一个函数，用来在下面的窗口中打开eshell
+(defun bottom-side-eshell ()
+  "Open an eshell window in the bottom side."
+  (interactive)
+  (evil-window-split) ; 上下分屏
+  (evil-window-down 1) ; 移动到下面的窗口
+  (eshell)) ; 打开eshell
+
+;; 定义一个函数，用来杀死eshell的buffer
+(defun kill-eshell-buffer ()
+  "Kill the eshell buffer."
+  (interactive)
+  (kill-buffer "*eshell*")) ; 杀死名为*eshell*的buffer
+
+;; 为evil的普通模式绑定快捷键
+(evil-define-key 'normal global-map (kbd "\\eo") 'bottom-side-eshell) ; \eo用来打开eshell
+(evil-define-key 'normal global-map (kbd "\\ex") 'kill-eshell-buffer) ; \ex用来关闭eshell
 
 
 
@@ -1069,10 +1101,4 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
 (add-hook 'emacs-startup-hook 'recentf-open-files)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(helm-rg spaceline w32-browser ggtags modus-themes evil-matchit vdiff-magit zim-wiki-mode yasnippet whitespace-cleanup-mode which-key vdiff undo-fu rainbow-delimiters projectile-ripgrep neotree markdown-mode magit impatient-mode imenu-list highlight-symbol git-gutter+ flymake-shellcheck find-file-in-project expand-region evil-visualstar evil-visual-mark-mode evil-surround evil-search-highlight-persist evil-lion evil-commentary elscreen diff-hl counsel-etags corfu all-the-icons-nerd-fonts ac-etags)))
+
