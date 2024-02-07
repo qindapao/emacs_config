@@ -59,17 +59,6 @@ C:\Users\pc\AppData\Roaming\.emacs.d\bin
 
 如果你想查看C-z当前映射到哪个命令，你可以在Emacs中使用describe-key函数。只需按下C-h k（或者M-x describe-key），然后按下你想查询的键（在这个例子中是C-z），Emacs就会显示该键当前绑定的命令。
 
-## major mode
-
-### markdown mode
-
-#### 图片处理
-
-## treesit
-
-
-## tag系统
-
 
 ## 文件管理器
 
@@ -80,13 +69,29 @@ C:\Users\pc\AppData\Roaming\.emacs.d\bin
 * 手动进入字体文件下载的目录下，双击所有的字体文件，安装到`windows`系统中。
 
 
+## 常用的二进制文件
 
-gge
+### fzf
 
-gegegge
-gegeg
+项目的主页在[这里](https://github.com/junegunn/fzf)。
 
-geg
+### PasteEx
 
-gegge geg
+可以方便的粘贴剪切板里面的图像。项目的主页在[这里](https://github.com/huiyadanli/PasteEx)。在有这个二进制工具的基础上，`emacs`有一个扩展叫[pasteex-mode](https://github.com/dnxbjyj/pasteex-mode)。安装上以后可以方便的粘贴图像。
+
+### shfmt
+
+`bash`代码的格式化工具，一般情况下用处不大。项目的主页在[这里](https://github.com/mvdan/sh)。
+
+### tree-sitter
+
+一个代码语法树分析工具，项目主页在[这里](https://github.com/tree-sitter/tree-sitter)。所有的语法文件从[这里](https://github.com/iquiw/emacs-tree-sitter-module-dll/)下载，使用的是`emacs`内置的`treesit`模块。下载后一般放置到这个目录`~/.emacs.d/tree-sitter`。
+
+或者直接在`emacs`中使用`treesit-install-language-grammar`来安装和更新语法。
+
+
+## 常见问题解决
+
+安装过程中如果提示某个模块找不到，那么可能是本地包的缓存需要更新，发下这个命令即可：`M-x package-refresh-contents`。然后重新运行`emacs`。
+
 
