@@ -110,6 +110,7 @@
                           helm-rg
                           helm-projectile
                           citre
+                          winum
                           ))
 
 (dolist (package my-package-list)
@@ -252,6 +253,34 @@
 (global-set-key (kbd "C-c x") 'kill-region)
 ;; 粘贴文本
 (global-set-key (kbd "C-c v") 'yank)
+
+;; 复制文本
+(global-set-key (kbd "C-S-c") 'clipboard-kill-ring-save)
+;; 粘贴文本
+;; (global-set-key (kbd "C-S-v") 'clipboard-yank)
+
+(defun my-yank-replace-selection ()
+  "Delete the selection and yank clipboard contents."
+  (interactive)
+  (when (region-active-p)
+    (delete-region (region-beginning) (region-end)))
+  (clipboard-yank))
+
+(global-set-key (kbd "C-S-v") 'my-yank-replace-selection)
+
+
+;; 粘贴文本
+(global-set-key (kbd "C-S-x") 'clipboard-kill-region)
+;; 如果要粘贴到evil的命令行需要使用 M-y命令
+
+
+(evil-define-key 'motion evil-ex-search-keymap (kbd "C-S-c") 'clipboard-kill-ring-save)
+(evil-define-key 'motion evil-ex-search-keymap (kbd "C-S-v") 'clipboard-yank)
+(evil-define-key 'motion evil-ex-search-keymap (kbd "C-S-x") 'clipboard-kill-region)
+
+
+
+
 ;; Evil和emacs切换
 (global-set-key (kbd "C-c C-z") 'evil-emacs-state)
 
@@ -368,8 +397,8 @@
 (global-evil-surround-mode 1)
 
 
-
 ;; 重做 撤销
+;; :TODO: 以后还可以考虑使用vundo,听说更好用
 
 (require 'undo-fu)
 (define-key evil-normal-state-map (kbd "C-z") 'undo-fu-only-undo)
@@ -617,6 +646,10 @@
   :bind
   ("<f8>" . neotree-toggle))
 
+;; ;; 设置neotree的手动刷新
+(evil-define-key 'normal neotree-mode-map (kbd "\\nr") 'neotree-refresh)
+
+
 ;; avy的超级跳转功能(https://github.com/abo-abo/avy)
 (use-package avy
   :ensure t
@@ -643,6 +676,9 @@
   :config
   (helm-mode 1)
   (setq helm-autoresize-mode t))
+
+(global-set-key (kbd "M-x") 'helm-M-x)
+
 
 ;; 文件查找
 (use-package counsel
@@ -1198,6 +1234,24 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
    ;; certain modes (like `prog-mode'), set it like this.
    citre-auto-enable-citre-mode-modes '(prog-mode)))
 
+
+;; 屏幕编号
+(setq winum-keymap
+    (let ((map (make-sparse-keymap)))
+      ;; (define-key map (kbd "C-`") 'winum-select-window-by-number)
+      ;; (define-key map (kbd "C-2") 'winum-select-window-by-number)
+      (define-key map (kbd "C-0") 'winum-select-window-0-or-10)
+      (define-key map (kbd "C-1") 'winum-select-window-1)
+      (define-key map (kbd "C-2") 'winum-select-window-2)
+      (define-key map (kbd "C-3") 'winum-select-window-3)
+      (define-key map (kbd "C-4") 'winum-select-window-4)
+      (define-key map (kbd "C-5") 'winum-select-window-5)
+      (define-key map (kbd "C-6") 'winum-select-window-6)
+      (define-key map (kbd "C-7") 'winum-select-window-7)
+      (define-key map (kbd "C-8") 'winum-select-window-8)
+      map))
+(require 'winum)
+(winum-mode)
 
 
 ;; 禁用启动屏幕
