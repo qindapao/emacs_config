@@ -1,6 +1,8 @@
 ;; :TODO: 暂时先固化这个配置,有时间再来调整它的顺序
 
 ;; 设置默认的编码环境
+
+(set-buffer-file-coding-system 'utf-8)
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
@@ -41,6 +43,20 @@
 
 (setenv "LC_ALL" "zh_CN.UTF-8")
 (setenv "LANG" "zh_CN.UTF-8")
+
+; 设置成utf-8不行,默认的编码是euc-cn
+; (set-clipboard-coding-system 'utf-8)
+(set-clipboard-coding-system 'euc-cn)
+;; 下面这一段也能解决问题,但是上面就够了。
+;; 解决剪切板乱码问题(https://emacs-china.org/t/windows-emacs/17115/3)
+; (if (eq system-type 'windows-nt)
+; 	(progn
+; 	  ;; (setq selection-coding-system 'utf-16le-dos) ;; 修复从网页剪切文本过来时显示 \nnn \nnn 的问题
+; 	  ;; (set-default selection-coding-system 'utf-16le-dos)
+; 	  (set-selection-coding-system 'utf-16le-dos) ;; 别名set-clipboard-coding-system
+; 	  )
+;   (set-selection-coding-system 'utf-8))
+
 
 ;; 不用设置代理
 ; (setq url-proxy-services
@@ -378,7 +394,8 @@
 (require 'pasteex-mode)
 ;; 已经在环境变量中，不需要指定绝对路径
 ;; (setq pasteex-executable-path "D:/programs/emasc/bin/PasteEx.exe")
-(setq pasteex-macos-executable-path "./img/demo.png")
+; (setq pasteex-macos-executable-path "D:/img/demo.png")
+(setq pasteex-image-dir "img/")
 (global-set-key (kbd "C-c p j") 'pasteex-image)
 (global-set-key (kbd "C-c p x") 'pasteex-delete-img-link-and-file-at-line)
 
