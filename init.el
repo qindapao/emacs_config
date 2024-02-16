@@ -261,6 +261,9 @@
 ;; 
 ;; (add-hook 'after-init-hook 'global-whitespace-mode)
 
+;; 选择所有的文本
+(global-set-key (kbd "C-a") 'mark-whole-buffer)
+
 ;; 使用系统剪切板
 (setq x-select-enable-clipboard t)
 ;; 复制文本
@@ -385,7 +388,7 @@
 
 
 ;; 使用zim-wiki-mode
-;; (require 'zim-wiki-mode)
+(require 'zim-wiki-mode)
 
 ;; 直接粘贴图像,这里的地址当前写死了,后面优化
 ;; :TODO: 当前不支持有中文的路径名啊
