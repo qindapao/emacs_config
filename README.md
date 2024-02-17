@@ -92,6 +92,10 @@ C:\Users\pc\AppData\Roaming\.emacs.d\bin
 
 ## 常见问题解决
 
-安装过程中如果提示某个模块找不到，那么可能是本地包的缓存需要更新，发下这个命令即可：`M-x package-refresh-contents`。然后重新运行`emacs`。
+* 安装过程中如果提示某个模块找不到，那么可能是本地包的缓存需要更新，发下这个命令即可：`M-x package-refresh-contents`。然后重新运行`emacs`。
+
+* emacs中可以交互式测试正则表达式：
+    * 打开一个包含你想要测试的文本的文件。
+    * 调用 M-x re-builder。屏幕底部将创建一个新窗口，其中包含空的正则表达式 ""。
 
 

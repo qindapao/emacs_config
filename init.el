@@ -1292,6 +1292,8 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
                                                   (message "Switching to DokuWiki mode.")
                                                   (dokuwiki-mode)))))
 
+(evil-define-key 'normal global-map (kbd "\\dwx") 'dokuwiki-remove-inline-images)
+(evil-define-key 'normal global-map (kbd "\\dwr") 'dokuwiki-refresh-inline-images)
 
 
 ;; 禁用启动屏幕
