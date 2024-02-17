@@ -388,7 +388,7 @@
 
 
 ;; 使用zim-wiki-mode
-(require 'zim-wiki-mode)
+; (require 'zim-wiki-mode)
 
 ;; 直接粘贴图像,这里的地址当前写死了,后面优化
 ;; :TODO: 当前不支持有中文的路径名啊
@@ -1272,6 +1272,26 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
       map))
 (require 'winum)
 (winum-mode)
+
+
+(defun dokuwiki-header-p ()
+  "Check if the current buffer starts with a DokuWiki header."
+  (save-excursion
+    (goto-char (point-min))
+    (message "DokuWiki check enter.")
+    (let ((header (buffer-substring-no-properties (point-min) (min (point-max) 1000))))
+      (let ((result (and (string-match-p "Content-Type: text/x-zim-wiki" header)
+                         (string-match-p "Wiki-Format: zim [0-9.]+" header)
+                         )))
+        (when result
+          (message "DokuWiki header found."))
+        result))))
+
+(add-to-list 'auto-mode-alist '("\\.txt\\'" . (lambda ()
+                                                (when (dokuwiki-header-p)
+                                                  (message "Switching to DokuWiki mode.")
+                                                  (dokuwiki-mode)))))
+
 
 
 ;; 禁用启动屏幕
