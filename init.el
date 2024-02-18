@@ -127,6 +127,7 @@
                           helm-projectile
                           citre
                           winum
+                          symbol-overlay
                           ))
 
 (dolist (package my-package-list)
@@ -224,6 +225,7 @@
 ;; (setq scroll-step 1) ;; 键盘滚动一行
 
 ;; 设置默认字体
+; 微软雅黑 PragmataPro Mono 这字体不支持斜体
 (set-face-attribute 'default nil :font (font-spec :family "微软雅黑 PragmataPro Mono" :size 22))
 
 ;; buffer修改后标题显示一个点号
@@ -648,13 +650,22 @@
 
   
 ;; 高亮光标下的符号
-(require 'highlight-symbol)
+; (require 'highlight-symbol)
+; ;; :TODO: 星号搜索不跳转当前不行(目前的实现方法都不优雅)
+; (evil-define-key 'normal global-map (kbd "#") 'highlight-symbol)
+; (evil-define-key 'normal global-map (kbd "<f3>") 'highlight-symbol-next)
+; (evil-define-key 'normal global-map (kbd "S-<f3>") 'highlight-symbol-prev)
+; (evil-define-key 'normal global-map (kbd "M-<f3>") 'highlight-symbol-query-replace)
+; (evil-define-key 'normal global-map (kbd "\\hx") 'highlight-symbol-remove-all)
+
 ;; :TODO: 星号搜索不跳转当前不行(目前的实现方法都不优雅)
-(evil-define-key 'normal global-map (kbd "#") 'highlight-symbol)
-(evil-define-key 'normal global-map (kbd "<f3>") 'highlight-symbol-next)
-(evil-define-key 'normal global-map (kbd "S-<f3>") 'highlight-symbol-prev)
-(evil-define-key 'normal global-map (kbd "M-<f3>") 'highlight-symbol-query-replace)
-(evil-define-key 'normal global-map (kbd "\\hx") 'highlight-symbol-remove-all)
+(evil-define-key 'normal global-map (kbd "#") 'symbol-overlay-put)
+;; 下面这个绑定似乎没有效果
+(evil-define-key 'visual global-map (kbd "#") 'symbol-overlay-put)
+(evil-define-key 'normal global-map (kbd "<f3>") 'symbol-overlay-switch-forward)
+(evil-define-key 'normal global-map (kbd "S-<f3>") 'symbol-overlay-switch-backward)
+(evil-define-key 'normal global-map (kbd "M-<f3>") 'symbol-overlay-mode)
+(evil-define-key 'normal global-map (kbd "\\hx") 'symbol-overlay-remove-all)
 
 
 ;; 安装文件浏览器(all-the-icons)
@@ -1294,6 +1305,56 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
 
 (evil-define-key 'normal global-map (kbd "\\dwx") 'dokuwiki-remove-inline-images)
 (evil-define-key 'normal global-map (kbd "\\dwr") 'dokuwiki-refresh-inline-images)
+(evil-define-key 'normal global-map (kbd "\\dwm") 'dokuwiki-toggle-markup-hiding)
+
+(defun open-web-link-at-point ()
+  "Open the web link under point in the default web browser."
+  (interactive)
+  (let ((url (thing-at-point 'url)))
+    (when url
+      (browse-url url))))
+
+(evil-define-key 'normal 'global (kbd "\\wol") 'open-web-link-at-point)
+
+(defun open-web-link-or-file-in-visual-mode ()
+  "Open the web link or local file in visual mode in the default web browser or Emacs."
+  (interactive)
+  (let ((url (buffer-substring-no-properties (region-beginning) (region-end))))
+    (when url
+      (if (file-exists-p url)
+          ;; If the URL is a local file, open it in Emacs
+          (find-file url)
+        ;; Otherwise, open it in the default web browser
+        (browse-url url)))))
+
+(evil-define-key 'visual 'global (kbd "\\wol") 'open-web-link-or-file-in-visual-mode)
+
+(defun open-web-link-or-file-in-visual-mode-windows ()
+  "Open the web link or local file in visual mode in the default web browser or the default program on Windows."
+  (interactive)
+  (let* ((url (buffer-substring-no-properties (region-beginning) (region-end)))
+         (buffer-file-directory (file-name-directory (buffer-file-name)))
+         (buffer-file-basename (file-name-base (buffer-file-name)))
+         (subdir-path (concat buffer-file-directory buffer-file-basename "/" url)))
+    (when url
+      (if (file-exists-p url)
+          ;; If the URL is a local file, open it in the default program
+          (w32-shell-execute "open" (expand-file-name url))
+        (if (file-exists-p subdir-path)
+            ;; If the file exists in the subdirectory, open it in the default program
+            (w32-shell-execute "open" (expand-file-name subdir-path))
+          ;; Otherwise, open it in the default web browser
+          (browse-url url))))))
+
+(evil-define-key 'visual 'global (kbd "\\wwl") 'open-web-link-or-file-in-visual-mode-windows)
+
+
+
+;; 通过gvim来打开当前文件
+(evil-define-key 'normal 'global (kbd "\\ov")
+  (lambda ()
+    (interactive)
+    (shell-command (concat "gvim " (buffer-file-name)))))
 
 
 ;; 禁用启动屏幕
@@ -1304,6 +1365,9 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
 (setq recentf-max-menu-items 100)
 (setq recentf-max-saved-items 100)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
-(add-hook 'emacs-startup-hook 'recentf-open-files)
 
+(defun check-file-or-show-recent ()
+  (unless (buffer-file-name)
+    (recentf-open-files)))
+(add-hook 'emacs-startup-hook 'check-file-or-show-recent)
 
