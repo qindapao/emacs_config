@@ -551,6 +551,8 @@
 (setq dabbrev-check-other-buffers t)
 
 ;; 没有弹出菜单，但是可以在所有的缓冲区中查找
+; 取消helm的自动补全功能(使用默认的弹出菜单)
+(seq helm-mode-handle-completion-in-region nil)
 (global-set-key (kbd "C-M-u") 'hippie-expand)
 ;; 有弹出菜单，只能在当前缓冲区中查找
 (global-set-key (kbd "C-u") 'dabbrev-completion)
@@ -571,6 +573,8 @@
 ;; # --
 ;; this is my sin 3?
 ;; # yas notes start 和 # yas notes end是注释的内容
+;; 如果要忽略掉yas的自动缩进功能(比如某些完整的代码片段),加入下面的代码
+;; # expand-env: ((yas-indent-line 'fixed))
 ;; :TODO: *YASnippet Documentation* 临时buffer无法自动关闭
 ;; :TODO: 补全特殊颜色不知道如何设定
 ;; :TODO: 文档长的情况是分两种,短的显示在弹窗中,长的显示在临时buffer中
@@ -1047,7 +1051,7 @@ EVENT is the mouse event."
   (interactive)
   (let ((query (if (region-active-p)
                    (buffer-substring-no-properties (region-beginning) (region-end))
-                 (thing-at-point 'word))))
+                 (thing-at-point 'symbol))))
     (deactivate-mark)
     (occur query)))
 
@@ -1058,8 +1062,10 @@ EVENT is the mouse event."
 (evil-define-key 'normal global-map (kbd "\\ooc") 'occur)
 
 ;; 自定义的项目搜索======{
+; 'word'    下划线不作为分隔符
+; 'symbol'  下划线作为分隔符
 (defun my-ripgrep-search-no-confirm (&optional force-current-directory manual-input)
-  "Perform a ripgrep search with the current word or region, without confirmation.
+  "Perform a ripgrep search with the current symbol or region, without confirmation.
 If FORCE-CURRENT-DIRECTORY is non-nil, force the search in the current directory.
 If MANUAL-INPUT is non-nil, prompt for the search term and directory."
   (interactive "P\nP")
@@ -1067,10 +1073,10 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
           (if manual-input
               (read-string "Enter search term: " (if (or (evil-visual-state-p) (region-active-p))
                                                      (buffer-substring-no-properties (region-beginning) (region-end))
-                                                   (thing-at-point 'word)))
+                                                   (thing-at-point 'symbol)))
             (if (or (evil-visual-state-p) (region-active-p))
                 (buffer-substring-no-properties (region-beginning) (region-end))
-              (thing-at-point 'word))))
+              (thing-at-point 'symbol))))
          (default-directory (if manual-input
                                 (read-directory-name "Enter directory: " default-directory)
                               (if force-current-directory
@@ -1081,7 +1087,7 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
     (ripgrep-regexp search-term default-directory)))
 
 (defun my-ripgrep-search-no-confirm-current-dir ()
-  "Perform a ripgrep search with the current word or region in the current directory, without confirmation."
+  "Perform a ripgrep search with the current symbol or region in the current directory, without confirmation."
   (interactive)
   (my-ripgrep-search-no-confirm t))
 
@@ -1104,7 +1110,7 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
   (interactive (list (read-directory-name "Enter directory: ")))
   (let* ((default-term (if (region-active-p)
                            (buffer-substring-no-properties (region-beginning) (region-end))
-                         (thing-at-point 'word))))
+                         (thing-at-point 'symbol))))
     (ripgrep-regexp (read-string (format "Enter search term (default \"%s\"): " default-term) nil nil default-term)
                     ;; "--hidden" "--no-ignore" "-C 5" "--heading"
                     ;; 搜索隐藏文件 显示上下文 跟踪符号链接
