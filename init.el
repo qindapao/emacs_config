@@ -208,6 +208,7 @@
 ;; shell文件就打开shell_check
 (add-hook 'sh-mode-hook 'flymake-mode)
 (add-hook 'bash-ts-mode-hook 'flymake-mode)
+(add-hook 'python-ts-mode-hook 'flymake-mode)
 (add-hook 'sh-mode-hook 'flymake-shellcheck-load)
 (add-hook 'bash-ts-mode-hook 'flymake-shellcheck-load)
 
@@ -552,7 +553,7 @@
 
 ;; 没有弹出菜单，但是可以在所有的缓冲区中查找
 ; 取消helm的自动补全功能(使用默认的弹出菜单)
-(seq helm-mode-handle-completion-in-region nil)
+(setq helm-mode-handle-completion-in-region nil)
 (global-set-key (kbd "C-M-u") 'hippie-expand)
 ;; 有弹出菜单，只能在当前缓冲区中查找
 (global-set-key (kbd "C-u") 'dabbrev-completion)
