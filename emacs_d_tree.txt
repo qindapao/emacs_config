@@ -2,6 +2,7 @@
 卷序列号为 9E79-8566
 
 C:\Users\pc\AppData\Roaming\.emacs.d 目录树备份
+使用windows的tree \F命令生成
 
 
 C:.
