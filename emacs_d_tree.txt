@@ -1,0 +1,1207 @@
+卷 OS 的文件夹 PATH 列表
+卷序列号为 9E79-8566
+
+C:\Users\pc\AppData\Roaming\.emacs.d 目录树备份
+
+
+C:.
+│  ac-comphist.dat
+│  emacs_d_tree.txt
+│  init.el
+│  projects
+│  recentf
+│  xx.txt
+│  
+├─all-the-icons-install-fonts
+│      all-the-icons.ttf
+│      file-icons.ttf
+│      fontawesome.ttf
+│      material-design-icons.ttf
+│      octicons.ttf
+│      weathericons.ttf
+│      
+├─auto-save-list
+│      .saves-19244-DESKTOP-0MVRMOU~
+│      .saves-19336-DESKTOP-0MVRMOU~
+│      .saves-24000-DESKTOP-0MVRMOU~
+│      .saves-6136-DESKTOP-0MVRMOU~
+│      .saves-8616-DESKTOP-0MVRMOU~
+│      .saves-8736-DESKTOP-0MVRMOU~
+│      
+├─backups
+│      !drive_e!code!emacs!emacs_config!magit_user_guid.md~
+│      !drive_e!code!linux_app_use_in_windows!cygwin_use_gui_app.md~
+│      !drive_e!code!pasteex-mode!pasteex-mode!新建文本文档 - 副本.md~
+│      !drive_e!code!pasteex-mode!pasteex-mode!新建文本文档-副本-副本.md~
+│      !drive_e!code!pasteex-mode!pasteex-mode!新建文本文档.txt~
+│      !drive_e!zim_notebook!常用工具!设计软件!asciio!cygwin.dokuwiki~
+│      !drive_e!zim_notebook!常用工具!设计软件!asciio!cygwin环境.txt~
+│      
+├─bin
+│  │  fzf.exe
+│  │  gtags.conf
+│  │  PasteEx.exe
+│  │  shfmt.exe
+│  │  tree-sitter.exe
+│  │  
+│  ├─Language
+│  │  ├─zh-CN
+│  │  │      PasteEx.resources.dll
+│  │  │      
+│  │  └─zh-Hant
+│  │          PasteEx.resources.dll
+│  │          
+│  └─User
+│          PasteEx.log
+│          
+├─clue
+│  │  .gitignore
+│  │  clue.el
+│  │  LICENSE
+│  │  logo.svg
+│  │  Makefile
+│  │  README.md
+│  │  
+│  ├─.github
+│  │  └─workflows
+│  │          ci.yml
+│  │          
+│  └─scripts
+│          common.sh
+│          compile.sh
+│          style.sh
+│          
+├─elisp
+│      dokuwiki-mode.el
+│      pasteex-mode.el
+│      popup.el
+│      
+├─elpa
+│  │  compat-29.1.4.4.signed
+│  │  evil-1.15.0.signed
+│  │  markdown-mode-2.6.signed
+│  │  undo-fu-0.5.signed
+│  │  
+│  ├─ac-etags-20161001.1507
+│  │      ac-etags-autoloads.el
+│  │      ac-etags-pkg.el
+│  │      ac-etags.el
+│  │      ac-etags.elc
+│  │      
+│  ├─all-the-icons-20240108.559
+│  │  │  all-the-icons-autoloads.el
+│  │  │  all-the-icons-faces.el
+│  │  │  all-the-icons-faces.elc
+│  │  │  all-the-icons-pkg.el
+│  │  │  all-the-icons.el
+│  │  │  all-the-icons.elc
+│  │  │  
+│  │  └─data
+│  │          data-alltheicons.el
+│  │          data-alltheicons.elc
+│  │          data-faicons.el
+│  │          data-faicons.elc
+│  │          data-fileicons.el
+│  │          data-fileicons.elc
+│  │          data-material.el
+│  │          data-material.elc
+│  │          data-octicons.el
+│  │          data-octicons.elc
+│  │          data-weathericons.el
+│  │          data-weathericons.elc
+│  │          
+│  ├─all-the-icons-nerd-fonts-20231022.1956
+│  │      all-the-icons-nerd-fonts-autoloads.el
+│  │      all-the-icons-nerd-fonts-pkg.el
+│  │      all-the-icons-nerd-fonts.el
+│  │      all-the-icons-nerd-fonts.elc
+│  │      
+│  ├─archives
+│  │  ├─gnu
+│  │  │      archive-contents
+│  │  │      archive-contents.signed
+│  │  │      
+│  │  ├─melpa
+│  │  │      archive-contents
+│  │  │      
+│  │  └─nongnu
+│  │          archive-contents
+│  │          archive-contents.signed
+│  │          
+│  ├─async-20240108.1526
+│  │      async-autoloads.el
+│  │      async-bytecomp.el
+│  │      async-bytecomp.elc
+│  │      async-pkg.el
+│  │      async.el
+│  │      async.elc
+│  │      dired-async.el
+│  │      dired-async.elc
+│  │      smtpmail-async.el
+│  │      smtpmail-async.elc
+│  │      
+│  ├─auto-complete-20240101.831
+│  │  │  auto-complete-autoloads.el
+│  │  │  auto-complete-config.el
+│  │  │  auto-complete-config.elc
+│  │  │  auto-complete-pkg.el
+│  │  │  auto-complete.el
+│  │  │  auto-complete.elc
+│  │  │  
+│  │  └─dict
+│  │          ada-mode
+│  │          c++-mode
+│  │          c-mode
+│  │          caml-mode
+│  │          clojure-mode
+│  │          clojurescript-mode
+│  │          coq-mode
+│  │          css-mode
+│  │          erlang-mode
+│  │          ess-julia-mode
+│  │          go-mode
+│  │          haskell-mode
+│  │          java-mode
+│  │          js-mode
+│  │          julia-mode
+│  │          lua-mode
+│  │          nim-mode
+│  │          objc-mode
+│  │          octave-mode
+│  │          php-mode
+│  │          python-mode
+│  │          qml-mode
+│  │          ruby-mode
+│  │          scala-mode
+│  │          scheme-mode
+│  │          sclang-mode
+│  │          sh-mode
+│  │          swift-mode
+│  │          tcl-mode
+│  │          ts-mode
+│  │          tuareg-mode
+│  │          verilog-mode
+│  │          
+│  ├─avy-20230420.404
+│  │      avy-autoloads.el
+│  │      avy-pkg.el
+│  │      avy.el
+│  │      avy.elc
+│  │      
+│  ├─citre-20240203.457
+│  │      citre-autoloads.el
+│  │      citre-backend-interface.el
+│  │      citre-backend-interface.elc
+│  │      citre-common-tag.el
+│  │      citre-common-tag.elc
+│  │      citre-common-util.el
+│  │      citre-common-util.elc
+│  │      citre-config.el
+│  │      citre-config.elc
+│  │      citre-ctags.el
+│  │      citre-ctags.elc
+│  │      citre-global.el
+│  │      citre-global.elc
+│  │      citre-lang-c.el
+│  │      citre-lang-c.elc
+│  │      citre-lang-fileref.el
+│  │      citre-lang-fileref.elc
+│  │      citre-lang-verilog.el
+│  │      citre-lang-verilog.elc
+│  │      citre-pkg.el
+│  │      citre-readtags-tables.el
+│  │      citre-readtags-tables.elc
+│  │      citre-readtags.el
+│  │      citre-readtags.elc
+│  │      citre-tags.el
+│  │      citre-tags.elc
+│  │      citre-ui-jump.el
+│  │      citre-ui-jump.elc
+│  │      citre-ui-peek.el
+│  │      citre-ui-peek.elc
+│  │      citre.el
+│  │      citre.elc
+│  │      
+│  ├─compat-29.1.4.4
+│  │      compat-25.el
+│  │      compat-25.elc
+│  │      compat-26.el
+│  │      compat-26.elc
+│  │      compat-27.el
+│  │      compat-27.elc
+│  │      compat-28.el
+│  │      compat-28.elc
+│  │      compat-29.el
+│  │      compat-29.elc
+│  │      compat-autoloads.el
+│  │      compat-macs.el
+│  │      compat-pkg.el
+│  │      compat.el
+│  │      compat.elc
+│  │      compat.info
+│  │      dir
+│  │      NEWS.org
+│  │      
+│  ├─corfu-20240122.2327
+│  │      corfu-autoloads.el
+│  │      corfu-echo.el
+│  │      corfu-echo.elc
+│  │      corfu-history.el
+│  │      corfu-history.elc
+│  │      corfu-indexed.el
+│  │      corfu-indexed.elc
+│  │      corfu-info.el
+│  │      corfu-info.elc
+│  │      corfu-pkg.el
+│  │      corfu-popupinfo.el
+│  │      corfu-popupinfo.elc
+│  │      corfu-quick.el
+│  │      corfu-quick.elc
+│  │      corfu.el
+│  │      corfu.elc
+│  │      
+│  ├─counsel-20231025.2311
+│  │      counsel-autoloads.el
+│  │      counsel-pkg.el
+│  │      counsel.el
+│  │      counsel.elc
+│  │      
+│  ├─counsel-etags-20230808.1227
+│  │      counsel-etags-autoloads.el
+│  │      counsel-etags-pkg.el
+│  │      counsel-etags.el
+│  │      counsel-etags.elc
+│  │      
+│  ├─dash-20240103.1301
+│  │      dash-autoloads.el
+│  │      dash-pkg.el
+│  │      dash.el
+│  │      dash.elc
+│  │      dash.info
+│  │      dir
+│  │      
+│  ├─diff-hl-20240127.34
+│  │      diff-hl-amend.el
+│  │      diff-hl-amend.elc
+│  │      diff-hl-autoloads.el
+│  │      diff-hl-dired.el
+│  │      diff-hl-dired.elc
+│  │      diff-hl-flydiff.el
+│  │      diff-hl-flydiff.elc
+│  │      diff-hl-inline-popup.el
+│  │      diff-hl-inline-popup.elc
+│  │      diff-hl-margin.el
+│  │      diff-hl-margin.elc
+│  │      diff-hl-pkg.el
+│  │      diff-hl-show-hunk-posframe.el
+│  │      diff-hl-show-hunk-posframe.elc
+│  │      diff-hl-show-hunk.el
+│  │      diff-hl-show-hunk.elc
+│  │      diff-hl.el
+│  │      diff-hl.elc
+│  │      
+│  ├─dokuwiki-mode-20170223.1301
+│  │      dokuwiki-mode-autoloads.el
+│  │      dokuwiki-mode-pkg.el
+│  │      dokuwiki-mode.el
+│  │      dokuwiki-mode.elc
+│  │      
+│  ├─elscreen-20181009.451
+│  │      elscreen-autoloads.el
+│  │      elscreen-buffer-list.el
+│  │      elscreen-buffer-list.elc
+│  │      elscreen-color-theme.el
+│  │      elscreen-color-theme.elc
+│  │      elscreen-dired.el
+│  │      elscreen-dired.elc
+│  │      elscreen-dnd.el
+│  │      elscreen-dnd.elc
+│  │      elscreen-gf.el
+│  │      elscreen-gf.elc
+│  │      elscreen-goby.el
+│  │      elscreen-goby.elc
+│  │      elscreen-howm.el
+│  │      elscreen-howm.elc
+│  │      elscreen-pkg.el
+│  │      elscreen-server.el
+│  │      elscreen-server.elc
+│  │      elscreen-speedbar.el
+│  │      elscreen-speedbar.elc
+│  │      elscreen-w3m.el
+│  │      elscreen-w3m.elc
+│  │      elscreen-wl.el
+│  │      elscreen.el
+│  │      elscreen.elc
+│  │      
+│  ├─evil-1.15.0
+│  │  │  .dir-locals.el
+│  │  │  Cask
+│  │  │  CHANGES.org
+│  │  │  CONTRIBUTING.md
+│  │  │  dir
+│  │  │  evil-autoloads.el
+│  │  │  evil-command-window.el
+│  │  │  evil-command-window.elc
+│  │  │  evil-commands.el
+│  │  │  evil-commands.elc
+│  │  │  evil-common.el
+│  │  │  evil-common.elc
+│  │  │  evil-core.el
+│  │  │  evil-core.elc
+│  │  │  evil-development.el
+│  │  │  evil-development.elc
+│  │  │  evil-digraphs.el
+│  │  │  evil-digraphs.elc
+│  │  │  evil-ex.el
+│  │  │  evil-ex.elc
+│  │  │  evil-integration.el
+│  │  │  evil-integration.elc
+│  │  │  evil-jumps.el
+│  │  │  evil-jumps.elc
+│  │  │  evil-keybindings.el
+│  │  │  evil-keybindings.elc
+│  │  │  evil-macros.el
+│  │  │  evil-macros.elc
+│  │  │  evil-maps.el
+│  │  │  evil-maps.elc
+│  │  │  evil-pkg.el
+│  │  │  evil-repeat.el
+│  │  │  evil-repeat.elc
+│  │  │  evil-search.el
+│  │  │  evil-search.elc
+│  │  │  evil-states.el
+│  │  │  evil-states.elc
+│  │  │  evil-test-helpers.el
+│  │  │  evil-test-helpers.elc
+│  │  │  evil-tests.el
+│  │  │  evil-tests.elc
+│  │  │  evil-types.el
+│  │  │  evil-types.elc
+│  │  │  evil-vars.el
+│  │  │  evil-vars.elc
+│  │  │  evil.el
+│  │  │  evil.elc
+│  │  │  evil.info
+│  │  │  Makefile
+│  │  │  README.md
+│  │  │  
+│  │  ├─.github
+│  │  │  │  ISSUE_TEMPLATE.md
+│  │  │  │  
+│  │  │  └─workflows
+│  │  │          test.yml
+│  │  │          
+│  │  └─doc
+│  │      │  docstringdb.json
+│  │      │  front.png
+│  │      │  logo.png
+│  │      │  logo.svg
+│  │      │  make.bat
+│  │      │  Makefile
+│  │      │  
+│  │      ├─build
+│  │      │  └─texinfo
+│  │      │          evil.texi
+│  │      │          
+│  │      └─source
+│  │          │  conf.py
+│  │          │  extension.rst
+│  │          │  faq.rst
+│  │          │  hooks.rst
+│  │          │  index.rst
+│  │          │  indices.rst
+│  │          │  internals.rst
+│  │          │  keymaps.rst
+│  │          │  license.rst
+│  │          │  overview.rst
+│  │          │  settings.rst
+│  │          │  
+│  │          └─_ext
+│  │                  elisp.py
+│  │                  
+│  ├─evil-commentary-20230610.1006
+│  │      evil-commentary-autoloads.el
+│  │      evil-commentary-integration.el
+│  │      evil-commentary-integration.elc
+│  │      evil-commentary-pkg.el
+│  │      evil-commentary.el
+│  │      evil-commentary.elc
+│  │      
+│  ├─evil-lion-20220317.1030
+│  │      evil-lion-autoloads.el
+│  │      evil-lion-pkg.el
+│  │      evil-lion.el
+│  │      evil-lion.elc
+│  │      
+│  ├─evil-matchit-20231011.1119
+│  │      evil-matchit-autoloads.el
+│  │      evil-matchit-c.el
+│  │      evil-matchit-c.elc
+│  │      evil-matchit-cmake.el
+│  │      evil-matchit-cmake.elc
+│  │      evil-matchit-diff.el
+│  │      evil-matchit-diff.elc
+│  │      evil-matchit-elixir.el
+│  │      evil-matchit-elixir.elc
+│  │      evil-matchit-evil-setup.el
+│  │      evil-matchit-fortran.el
+│  │      evil-matchit-fortran.elc
+│  │      evil-matchit-html.el
+│  │      evil-matchit-html.elc
+│  │      evil-matchit-indent.el
+│  │      evil-matchit-indent.elc
+│  │      evil-matchit-javascript.el
+│  │      evil-matchit-javascript.elc
+│  │      evil-matchit-latex.el
+│  │      evil-matchit-latex.elc
+│  │      evil-matchit-markdown.el
+│  │      evil-matchit-markdown.elc
+│  │      evil-matchit-ocaml.el
+│  │      evil-matchit-ocaml.elc
+│  │      evil-matchit-octave.el
+│  │      evil-matchit-octave.elc
+│  │      evil-matchit-org.el
+│  │      evil-matchit-org.elc
+│  │      evil-matchit-pkg.el
+│  │      evil-matchit-prog.el
+│  │      evil-matchit-prog.elc
+│  │      evil-matchit-python.el
+│  │      evil-matchit-python.elc
+│  │      evil-matchit-ruby.el
+│  │      evil-matchit-ruby.elc
+│  │      evil-matchit-script.el
+│  │      evil-matchit-script.elc
+│  │      evil-matchit-sdk.el
+│  │      evil-matchit-sdk.elc
+│  │      evil-matchit-sh.el
+│  │      evil-matchit-sh.elc
+│  │      evil-matchit-simple.el
+│  │      evil-matchit-simple.elc
+│  │      evil-matchit-sql.el
+│  │      evil-matchit-sql.elc
+│  │      evil-matchit-template.el
+│  │      evil-matchit-template.elc
+│  │      evil-matchit-terminal.el
+│  │      evil-matchit-terminal.elc
+│  │      evil-matchit-verilog.el
+│  │      evil-matchit-verilog.elc
+│  │      evil-matchit-yaml.el
+│  │      evil-matchit-yaml.elc
+│  │      evil-matchit.el
+│  │      evil-matchit.elc
+│  │      
+│  ├─evil-search-highlight-persist-20170523.334
+│  │      evil-search-highlight-persist-autoloads.el
+│  │      evil-search-highlight-persist-pkg.el
+│  │      evil-search-highlight-persist.el
+│  │      evil-search-highlight-persist.elc
+│  │      
+│  ├─evil-surround-20230917.1541
+│  │      evil-surround-autoloads.el
+│  │      evil-surround-pkg.el
+│  │      evil-surround.el
+│  │      evil-surround.elc
+│  │      
+│  ├─evil-visual-mark-mode-20230202.318
+│  │      evil-visual-mark-mode-autoloads.el
+│  │      evil-visual-mark-mode-pkg.el
+│  │      evil-visual-mark-mode.el
+│  │      evil-visual-mark-mode.elc
+│  │      
+│  ├─evil-visualstar-20160223.48
+│  │      evil-visualstar-autoloads.el
+│  │      evil-visualstar-pkg.el
+│  │      evil-visualstar.el
+│  │      evil-visualstar.elc
+│  │      
+│  ├─expand-region-20240119.1039
+│  │      cc-mode-expansions.el
+│  │      cc-mode-expansions.elc
+│  │      clojure-mode-expansions.el
+│  │      clojure-mode-expansions.elc
+│  │      cperl-mode-expansions.el
+│  │      cperl-mode-expansions.elc
+│  │      css-mode-expansions.el
+│  │      css-mode-expansions.elc
+│  │      enh-ruby-mode-expansions.el
+│  │      enh-ruby-mode-expansions.elc
+│  │      er-basic-expansions.el
+│  │      er-basic-expansions.elc
+│  │      erlang-mode-expansions.el
+│  │      erlang-mode-expansions.elc
+│  │      expand-region-autoloads.el
+│  │      expand-region-core.el
+│  │      expand-region-core.elc
+│  │      expand-region-custom.el
+│  │      expand-region-custom.elc
+│  │      expand-region-pkg.el
+│  │      expand-region.el
+│  │      expand-region.elc
+│  │      feature-mode-expansions.el
+│  │      feature-mode-expansions.elc
+│  │      html-mode-expansions.el
+│  │      html-mode-expansions.elc
+│  │      js-mode-expansions.el
+│  │      js-mode-expansions.elc
+│  │      js2-mode-expansions.el
+│  │      js2-mode-expansions.elc
+│  │      jsp-expansions.el
+│  │      jsp-expansions.elc
+│  │      latex-mode-expansions.el
+│  │      latex-mode-expansions.elc
+│  │      nxml-mode-expansions.el
+│  │      nxml-mode-expansions.elc
+│  │      octave-expansions.el
+│  │      octave-expansions.elc
+│  │      python-el-expansions.el
+│  │      python-el-expansions.elc
+│  │      python-el-fgallina-expansions.el
+│  │      python-el-fgallina-expansions.elc
+│  │      python-mode-expansions.el
+│  │      python-mode-expansions.elc
+│  │      ruby-mode-expansions.el
+│  │      ruby-mode-expansions.elc
+│  │      sml-mode-expansions.el
+│  │      sml-mode-expansions.elc
+│  │      subword-mode-expansions.el
+│  │      subword-mode-expansions.elc
+│  │      text-mode-expansions.el
+│  │      text-mode-expansions.elc
+│  │      the-org-mode-expansions.el
+│  │      the-org-mode-expansions.elc
+│  │      web-mode-expansions.el
+│  │      web-mode-expansions.elc
+│  │      yaml-mode-expansions.el
+│  │      yaml-mode-expansions.elc
+│  │      
+│  ├─find-file-in-project-20230506.544
+│  │      find-file-in-project-autoloads.el
+│  │      find-file-in-project-pkg.el
+│  │      find-file-in-project.el
+│  │      find-file-in-project.elc
+│  │      
+│  ├─flymake-shellcheck-20220308.2218
+│  │      flymake-shellcheck-autoloads.el
+│  │      flymake-shellcheck-pkg.el
+│  │      flymake-shellcheck.el
+│  │      flymake-shellcheck.elc
+│  │      
+│  ├─ggtags-20230602.133
+│  │      ggtags-autoloads.el
+│  │      ggtags-pkg.el
+│  │      ggtags.el
+│  │      ggtags.elc
+│  │      
+│  ├─git-commit-20240123.1358
+│  │      git-commit-autoloads.el
+│  │      git-commit-pkg.el
+│  │      git-commit.el
+│  │      git-commit.elc
+│  │      
+│  ├─git-gutter+-20151204.1723
+│  │      git-gutter+-autoloads.el
+│  │      git-gutter+-pkg.el
+│  │      git-gutter+.el
+│  │      git-gutter+.elc
+│  │      
+│  ├─gnupg
+│  │      pubring.gpg
+│  │      pubring.gpg~
+│  │      secring.gpg
+│  │      trustdb.gpg
+│  │      
+│  ├─helm-20240130.1436
+│  │      .dir-locals.el
+│  │      emacs-helm.sh
+│  │      helm-adaptive.el
+│  │      helm-adaptive.elc
+│  │      helm-autoloads.el
+│  │      helm-bookmark.el
+│  │      helm-bookmark.elc
+│  │      helm-buffers.el
+│  │      helm-buffers.elc
+│  │      helm-color.el
+│  │      helm-color.elc
+│  │      helm-command.el
+│  │      helm-command.elc
+│  │      helm-dabbrev.el
+│  │      helm-dabbrev.elc
+│  │      helm-easymenu.el
+│  │      helm-easymenu.elc
+│  │      helm-elisp.el
+│  │      helm-elisp.elc
+│  │      helm-epa.el
+│  │      helm-epa.elc
+│  │      helm-eshell.el
+│  │      helm-eshell.elc
+│  │      helm-eval.el
+│  │      helm-eval.elc
+│  │      helm-external.el
+│  │      helm-external.elc
+│  │      helm-fd.el
+│  │      helm-fd.elc
+│  │      helm-files.el
+│  │      helm-files.elc
+│  │      helm-find.el
+│  │      helm-find.elc
+│  │      helm-font.el
+│  │      helm-font.elc
+│  │      helm-for-files.el
+│  │      helm-for-files.elc
+│  │      helm-global-bindings.el
+│  │      helm-global-bindings.elc
+│  │      helm-grep.el
+│  │      helm-grep.elc
+│  │      helm-help.el
+│  │      helm-help.elc
+│  │      helm-id-utils.el
+│  │      helm-id-utils.elc
+│  │      helm-imenu.el
+│  │      helm-imenu.elc
+│  │      helm-info.el
+│  │      helm-info.elc
+│  │      helm-locate.el
+│  │      helm-locate.elc
+│  │      helm-man.el
+│  │      helm-man.elc
+│  │      helm-misc.el
+│  │      helm-misc.elc
+│  │      helm-mode.el
+│  │      helm-mode.elc
+│  │      helm-net.el
+│  │      helm-net.elc
+│  │      helm-occur.el
+│  │      helm-occur.elc
+│  │      helm-packages.el
+│  │      helm-packages.elc
+│  │      helm-pkg.el
+│  │      helm-regexp.el
+│  │      helm-regexp.elc
+│  │      helm-ring.el
+│  │      helm-ring.elc
+│  │      helm-semantic.el
+│  │      helm-semantic.elc
+│  │      helm-sys.el
+│  │      helm-sys.elc
+│  │      helm-tags.el
+│  │      helm-tags.elc
+│  │      helm-types.el
+│  │      helm-types.elc
+│  │      helm-utils.el
+│  │      helm-utils.elc
+│  │      helm-x-files.el
+│  │      helm-x-files.elc
+│  │      helm.el
+│  │      helm.elc
+│  │      
+│  ├─helm-ag-20221017.1528
+│  │      helm-ag-autoloads.el
+│  │      helm-ag-pkg.el
+│  │      helm-ag.el
+│  │      helm-ag.elc
+│  │      
+│  ├─helm-core-20240130.1931
+│  │      helm-core-autoloads.el
+│  │      helm-core-pkg.el
+│  │      helm-core.el
+│  │      helm-core.elc
+│  │      helm-lib.el
+│  │      helm-lib.elc
+│  │      helm-multi-match.el
+│  │      helm-multi-match.elc
+│  │      helm-source.el
+│  │      helm-source.elc
+│  │      
+│  ├─helm-projectile-20231023.1425
+│  │      helm-projectile-autoloads.el
+│  │      helm-projectile-pkg.el
+│  │      helm-projectile.el
+│  │      helm-projectile.elc
+│  │      
+│  ├─helm-rg-20200721.725
+│  │      helm-rg-autoloads.el
+│  │      helm-rg-pkg.el
+│  │      helm-rg.el
+│  │      
+│  ├─highlight-20210318.2248
+│  │      highlight-autoloads.el
+│  │      highlight-pkg.el
+│  │      highlight.el
+│  │      highlight.elc
+│  │      
+│  ├─highlight-symbol-20160102.2009
+│  │      highlight-symbol-autoloads.el
+│  │      highlight-symbol-pkg.el
+│  │      highlight-symbol.el
+│  │      highlight-symbol.elc
+│  │      
+│  ├─htmlize-20210825.2150
+│  │      htmlize-autoloads.el
+│  │      htmlize-pkg.el
+│  │      htmlize.el
+│  │      htmlize.elc
+│  │      
+│  ├─hydra-20220910.1206
+│  │      hydra-autoloads.el
+│  │      hydra-examples.el
+│  │      hydra-ox.el
+│  │      hydra-ox.elc
+│  │      hydra-pkg.el
+│  │      hydra.el
+│  │      hydra.elc
+│  │      
+│  ├─imenu-list-20210420.1200
+│  │      imenu-list-autoloads.el
+│  │      imenu-list-pkg.el
+│  │      imenu-list.el
+│  │      imenu-list.elc
+│  │      
+│  ├─impatient-mode-20230511.1746
+│  │      impatient-mode-autoloads.el
+│  │      impatient-mode-pkg.el
+│  │      impatient-mode.el
+│  │      impatient-mode.elc
+│  │      index.html
+│  │      jquery.js
+│  │      loading.html
+│  │      
+│  ├─ivy-20231025.2311
+│  │      colir.el
+│  │      colir.elc
+│  │      dir
+│  │      elpa.el
+│  │      elpa.elc
+│  │      ivy-autoloads.el
+│  │      ivy-faces.el
+│  │      ivy-faces.elc
+│  │      ivy-help.org
+│  │      ivy-overlay.el
+│  │      ivy-overlay.elc
+│  │      ivy-pkg.el
+│  │      ivy.el
+│  │      ivy.elc
+│  │      ivy.info
+│  │      
+│  ├─link-hint-20231225.1354
+│  │      link-hint-autoloads.el
+│  │      link-hint-pkg.el
+│  │      link-hint.el
+│  │      link-hint.elc
+│  │      
+│  ├─lv-20200507.1518
+│  │      lv-autoloads.el
+│  │      lv-pkg.el
+│  │      lv.el
+│  │      lv.elc
+│  │      
+│  ├─magit-20240206.2256
+│  │      AUTHORS.md
+│  │      dir
+│  │      git-rebase.el
+│  │      git-rebase.elc
+│  │      LICENSE
+│  │      magit-apply.el
+│  │      magit-apply.elc
+│  │      magit-autoloads.el
+│  │      magit-autorevert.el
+│  │      magit-autorevert.elc
+│  │      magit-base.el
+│  │      magit-base.elc
+│  │      magit-bisect.el
+│  │      magit-bisect.elc
+│  │      magit-blame.el
+│  │      magit-blame.elc
+│  │      magit-bookmark.el
+│  │      magit-bookmark.elc
+│  │      magit-branch.el
+│  │      magit-branch.elc
+│  │      magit-bundle.el
+│  │      magit-bundle.elc
+│  │      magit-clone.el
+│  │      magit-clone.elc
+│  │      magit-commit.el
+│  │      magit-commit.elc
+│  │      magit-core.el
+│  │      magit-core.elc
+│  │      magit-diff.el
+│  │      magit-diff.elc
+│  │      magit-ediff.el
+│  │      magit-ediff.elc
+│  │      magit-extras.el
+│  │      magit-extras.elc
+│  │      magit-fetch.el
+│  │      magit-fetch.elc
+│  │      magit-files.el
+│  │      magit-files.elc
+│  │      magit-git.el
+│  │      magit-git.elc
+│  │      magit-gitignore.el
+│  │      magit-gitignore.elc
+│  │      magit-log.el
+│  │      magit-log.elc
+│  │      magit-margin.el
+│  │      magit-margin.elc
+│  │      magit-merge.el
+│  │      magit-merge.elc
+│  │      magit-mode.el
+│  │      magit-mode.elc
+│  │      magit-notes.el
+│  │      magit-notes.elc
+│  │      magit-patch.el
+│  │      magit-patch.elc
+│  │      magit-pkg.el
+│  │      magit-process.el
+│  │      magit-process.elc
+│  │      magit-pull.el
+│  │      magit-pull.elc
+│  │      magit-push.el
+│  │      magit-push.elc
+│  │      magit-reflog.el
+│  │      magit-reflog.elc
+│  │      magit-refs.el
+│  │      magit-refs.elc
+│  │      magit-remote.el
+│  │      magit-remote.elc
+│  │      magit-repos.el
+│  │      magit-repos.elc
+│  │      magit-reset.el
+│  │      magit-reset.elc
+│  │      magit-sequence.el
+│  │      magit-sequence.elc
+│  │      magit-sparse-checkout.el
+│  │      magit-sparse-checkout.elc
+│  │      magit-stash.el
+│  │      magit-stash.elc
+│  │      magit-status.el
+│  │      magit-status.elc
+│  │      magit-submodule.el
+│  │      magit-submodule.elc
+│  │      magit-subtree.el
+│  │      magit-subtree.elc
+│  │      magit-tag.el
+│  │      magit-tag.elc
+│  │      magit-transient.el
+│  │      magit-transient.elc
+│  │      magit-wip.el
+│  │      magit-wip.elc
+│  │      magit-worktree.el
+│  │      magit-worktree.elc
+│  │      magit.el
+│  │      magit.elc
+│  │      magit.info
+│  │      
+│  ├─magit-section-20240114.13
+│  │      dir
+│  │      magit-section-autoloads.el
+│  │      magit-section-pkg.el
+│  │      magit-section.el
+│  │      magit-section.elc
+│  │      magit-section.info
+│  │      
+│  ├─markdown-mode-2.6
+│  │  │  .dir-locals.el
+│  │  │  CHANGES.md
+│  │  │  CONTRIBUTING.md
+│  │  │  LICENSE.md
+│  │  │  markdown-mode-autoloads.el
+│  │  │  markdown-mode-pkg.el
+│  │  │  markdown-mode.el
+│  │  │  markdown-mode.elc
+│  │  │  README-elpa
+│  │  │  README.md
+│  │  │  
+│  │  └─.github
+│  │      │  ISSUE_TEMPLATE.md
+│  │      │  PULL_REQUEST_TEMPLATE.md
+│  │      │  
+│  │      └─workflows
+│  │              test.yml
+│  │              
+│  ├─modus-themes-20240207.1047
+│  │      dir
+│  │      doclicense.info
+│  │      modus-operandi-deuteranopia-theme.el
+│  │      modus-operandi-deuteranopia-theme.elc
+│  │      modus-operandi-theme.el
+│  │      modus-operandi-theme.elc
+│  │      modus-operandi-tinted-theme.el
+│  │      modus-operandi-tinted-theme.elc
+│  │      modus-operandi-tritanopia-theme.el
+│  │      modus-operandi-tritanopia-theme.elc
+│  │      modus-themes-autoloads.el
+│  │      modus-themes-pkg.el
+│  │      modus-themes.el
+│  │      modus-themes.elc
+│  │      modus-themes.info
+│  │      modus-vivendi-deuteranopia-theme.el
+│  │      modus-vivendi-deuteranopia-theme.elc
+│  │      modus-vivendi-theme.el
+│  │      modus-vivendi-theme.elc
+│  │      modus-vivendi-tinted-theme.el
+│  │      modus-vivendi-tinted-theme.elc
+│  │      modus-vivendi-tritanopia-theme.el
+│  │      modus-vivendi-tritanopia-theme.elc
+│  │      theme-loaddefs.el
+│  │      
+│  ├─neotree-20230815.219
+│  │  │  neotree-autoloads.el
+│  │  │  neotree-pkg.el
+│  │  │  neotree.el
+│  │  │  neotree.elc
+│  │  │  
+│  │  └─icons
+│  │          close.xpm
+│  │          leaf.xpm
+│  │          open.xpm
+│  │          
+│  ├─nerd-icons-20240122.644
+│  │  │  nerd-icons-autoloads.el
+│  │  │  nerd-icons-data.el
+│  │  │  nerd-icons-data.elc
+│  │  │  nerd-icons-faces.el
+│  │  │  nerd-icons-faces.elc
+│  │  │  nerd-icons-pkg.el
+│  │  │  nerd-icons.el
+│  │  │  nerd-icons.elc
+│  │  │  
+│  │  └─data
+│  │          nerd-icons-data-codicon.el
+│  │          nerd-icons-data-codicon.elc
+│  │          nerd-icons-data-devicon.el
+│  │          nerd-icons-data-devicon.elc
+│  │          nerd-icons-data-faicon.el
+│  │          nerd-icons-data-faicon.elc
+│  │          nerd-icons-data-flicon.el
+│  │          nerd-icons-data-flicon.elc
+│  │          nerd-icons-data-ipsicon.el
+│  │          nerd-icons-data-ipsicon.elc
+│  │          nerd-icons-data-mdicon.el
+│  │          nerd-icons-data-mdicon.elc
+│  │          nerd-icons-data-octicon.el
+│  │          nerd-icons-data-octicon.elc
+│  │          nerd-icons-data-pomicon.el
+│  │          nerd-icons-data-pomicon.elc
+│  │          nerd-icons-data-powerline.el
+│  │          nerd-icons-data-powerline.elc
+│  │          nerd-icons-data-sucicon.el
+│  │          nerd-icons-data-sucicon.elc
+│  │          nerd-icons-data-wicon.el
+│  │          nerd-icons-data-wicon.elc
+│  │          
+│  ├─popup-20240101.830
+│  │      popup-autoloads.el
+│  │      popup-pkg.el
+│  │      popup.el
+│  │      popup.elc
+│  │      
+│  ├─powerline-20221110.1956
+│  │      powerline-autoloads.el
+│  │      powerline-pkg.el
+│  │      powerline-separators.el
+│  │      powerline-separators.elc
+│  │      powerline-themes.el
+│  │      powerline-themes.elc
+│  │      powerline.el
+│  │      powerline.elc
+│  │      
+│  ├─pretty-hydra-20231003.2046
+│  │      pretty-hydra-autoloads.el
+│  │      pretty-hydra-pkg.el
+│  │      pretty-hydra.el
+│  │      pretty-hydra.elc
+│  │      
+│  ├─projectile-20240205.1021
+│  │      projectile-autoloads.el
+│  │      projectile-pkg.el
+│  │      projectile.el
+│  │      projectile.elc
+│  │      
+│  ├─projectile-ripgrep-20221013.541
+│  │      projectile-ripgrep-autoloads.el
+│  │      projectile-ripgrep-pkg.el
+│  │      projectile-ripgrep.el
+│  │      projectile-ripgrep.elc
+│  │      
+│  ├─rainbow-delimiters-20210515.1254
+│  │      rainbow-delimiters-autoloads.el
+│  │      rainbow-delimiters-pkg.el
+│  │      rainbow-delimiters.el
+│  │      rainbow-delimiters.elc
+│  │      
+│  ├─ripgrep-20220520.1410
+│  │      ripgrep-autoloads.el
+│  │      ripgrep-pkg.el
+│  │      ripgrep.el
+│  │      ripgrep.elc
+│  │      
+│  ├─s-20220902.1511
+│  │      s-autoloads.el
+│  │      s-pkg.el
+│  │      s.el
+│  │      s.elc
+│  │      
+│  ├─simple-httpd-20230821.1458
+│  │      simple-httpd-autoloads.el
+│  │      simple-httpd-pkg.el
+│  │      simple-httpd.el
+│  │      simple-httpd.elc
+│  │      
+│  ├─spaceline-20230922.1127
+│  │      spaceline-autoloads.el
+│  │      spaceline-config.el
+│  │      spaceline-config.elc
+│  │      spaceline-pkg.el
+│  │      spaceline-segments.el
+│  │      spaceline-segments.elc
+│  │      spaceline.el
+│  │      spaceline.elc
+│  │      
+│  ├─swiper-20231025.2311
+│  │      swiper-autoloads.el
+│  │      swiper-pkg.el
+│  │      swiper.el
+│  │      swiper.elc
+│  │      
+│  ├─symbol-overlay-20230729.807
+│  │      symbol-overlay-autoloads.el
+│  │      symbol-overlay-pkg.el
+│  │      symbol-overlay.el
+│  │      symbol-overlay.elc
+│  │      
+│  ├─transient-20240201.1100
+│  │      dir
+│  │      gpl.info
+│  │      transient-autoloads.el
+│  │      transient-pkg.el
+│  │      transient.el
+│  │      transient.elc
+│  │      transient.info
+│  │      
+│  ├─undo-fu-0.5
+│  │      changelog.rst
+│  │      readme.rst
+│  │      undo-fu-autoloads.el
+│  │      undo-fu-pkg.el
+│  │      undo-fu.el
+│  │      undo-fu.elc
+│  │      
+│  ├─vdiff-20230621.201
+│  │      vdiff-autoloads.el
+│  │      vdiff-pkg.el
+│  │      vdiff.el
+│  │      
+│  ├─vdiff-magit-20220518.1948
+│  │      vdiff-magit-autoloads.el
+│  │      vdiff-magit-pkg.el
+│  │      vdiff-magit.el
+│  │      vdiff-magit.elc
+│  │      
+│  ├─w32-browser-20170101.1954
+│  │      w32-browser-autoloads.el
+│  │      w32-browser-pkg.el
+│  │      w32-browser.el
+│  │      w32-browser.elc
+│  │      
+│  ├─wfnames-20230924.1538
+│  │      wfnames-autoloads.el
+│  │      wfnames-pkg.el
+│  │      wfnames.el
+│  │      wfnames.elc
+│  │      
+│  ├─which-key-20230905.2128
+│  │      which-key-autoloads.el
+│  │      which-key-pkg.el
+│  │      which-key.el
+│  │      which-key.elc
+│  │      
+│  ├─whitespace-cleanup-mode-20210510.533
+│  │      whitespace-cleanup-mode-autoloads.el
+│  │      whitespace-cleanup-mode-pkg.el
+│  │      whitespace-cleanup-mode.el
+│  │      whitespace-cleanup-mode.elc
+│  │      
+│  ├─winum-20190911.1607
+│  │      winum-autoloads.el
+│  │      winum-pkg.el
+│  │      winum.el
+│  │      winum.elc
+│  │      
+│  ├─with-editor-20240101.2226
+│  │      dir
+│  │      with-editor-autoloads.el
+│  │      with-editor-pkg.el
+│  │      with-editor.el
+│  │      with-editor.elc
+│  │      with-editor.info
+│  │      
+│  ├─yasnippet-20240124.258
+│  │      yasnippet-autoloads.el
+│  │      yasnippet-pkg.el
+│  │      yasnippet.el
+│  │      yasnippet.elc
+│  │      
+│  └─zim-wiki-mode-20230927.1410
+│          zim-wiki-mode-autoloads.el
+│          zim-wiki-mode-pkg.el
+│          zim-wiki-mode.el
+│          zim-wiki-mode.elc
+│          
+├─emacs_tmp
+├─eshell
+│      history
+│      
+├─snippets
+├─transient
+│      history.el
+│      
+├─tree-sitter
+│  │  language-manifest.txt
+│  │  libtree-sitter-bash.dll
+│  │  libtree-sitter-c-sharp.dll
+│  │  libtree-sitter-c.dll
+│  │  libtree-sitter-cmake.dll
+│  │  libtree-sitter-cpp.dll
+│  │  libtree-sitter-css.dll
+│  │  libtree-sitter-dockerfile.dll
+│  │  libtree-sitter-elixir.dll
+│  │  libtree-sitter-go.dll
+│  │  libtree-sitter-gomod.dll
+│  │  libtree-sitter-heex.dll
+│  │  libtree-sitter-html.dll
+│  │  libtree-sitter-java.dll
+│  │  libtree-sitter-javascript.dll
+│  │  libtree-sitter-json.dll
+│  │  libtree-sitter-lua.dll
+│  │  libtree-sitter-python.dll
+│  │  libtree-sitter-ruby.dll
+│  │  libtree-sitter-rust.dll
+│  │  libtree-sitter-toml.dll
+│  │  libtree-sitter-tsx.dll
+│  │  libtree-sitter-typescript.dll
+│  │  libtree-sitter-yaml.dll
+│  │  
+│  └─licenses
+│          LICENSE-bash
+│          LICENSE-c
+│          LICENSE-c-sharp
+│          LICENSE-cmake
+│          LICENSE-cpp
+│          LICENSE-css
+│          LICENSE-dockerfile
+│          LICENSE-elixir
+│          LICENSE-go
+│          LICENSE-gomod
+│          LICENSE-heex
+│          LICENSE-html
+│          LICENSE-java
+│          LICENSE-javascript
+│          LICENSE-json
+│          LICENSE-lua
+│          LICENSE-python
+│          LICENSE-ruby
+│          LICENSE-rust
+│          LICENSE-toml
+│          LICENSE-typescript
+│          LICENSE-yaml
+│          
+└─url
