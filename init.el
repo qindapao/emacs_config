@@ -99,6 +99,7 @@
                           evil
                           impatient-mode
                           flymake-shellcheck
+                          flycheck
                           counsel-etags
                           evil-search-highlight-persist
                           evil-visualstar
@@ -111,6 +112,7 @@
                           magit
                           diff-hl
                           git-gutter+
+                          git-gutter
                           evil-visual-mark-mode
                           rainbow-delimiters
                           evil-lion
@@ -128,6 +130,8 @@
                           citre
                           winum
                           symbol-overlay
+                          dired-subtree
+                          back-button
                           ))
 
 (dolist (package my-package-list)
@@ -145,6 +149,10 @@
 ;; 自动加载文件变化
 (global-auto-revert-mode t)
 
+; 自动保存文件最后的打开位置
+(save-place-mode 1)
+
+
 ;; 安装主题
 (require 'modus-themes)
 (load-theme 'modus-operandi t) ;; 或者 'modus-vivendi
@@ -160,12 +168,12 @@
 (spaceline-spacemacs-theme)
 
 
-;; gtags模式(:TODO:目前发现一个问题是无法自动加载,需要手动去激活)
 ;; 如果想跟踪软链接目录,可以写个脚本更新项目根目录下的gtags.files文件
-(ggtags-mode 1)
-
-;; 启动和切换ggtags模式
+;; 启动和切换ggtags模式(目前已经开启自动加载下面这个无用了)
 (evil-define-key 'normal global-map (kbd "\\g") 'ggtags-mode)
+(require 'ggtags)
+(add-hook 'prog-mode-hook 'ggtags-mode)
+
 
 ;; 设置其它语言标签的生成器
 ;; :TODO: 这个东西也支持ctags(https://github.com/leoliu/ggtags)
@@ -174,7 +182,7 @@
 (setenv "GTAGSCONF" "C:/Users/pc/AppData/Roaming/.emacs.d/bin/gtags.conf")
 
 
-;; 隐藏工具栏
+;; 隐藏工具栏(标记环的前进和后退可以使用快捷键)
 (tool-bar-mode -1)
 
 ;; matchit
@@ -211,6 +219,25 @@
 (add-hook 'python-ts-mode-hook 'flymake-mode)
 (add-hook 'sh-mode-hook 'flymake-shellcheck-load)
 (add-hook 'bash-ts-mode-hook 'flymake-shellcheck-load)
+; ; ; 这个可能不是必要的
+; ; (setq flymake-python-pyflakes-executable "D:/python/Scripts/flake8.exe")
+; ; (setq flymake-python-pylint-executable "D:/python/Scripts/pylint.exe")
+
+
+; flycheck 有点卡暂时屏蔽
+; (use-package flycheck
+;   :ensure t
+;   :init (global-flycheck-mode)
+;   :config
+;   (setq-default flycheck-disabled-checkers '(python-pycompile))
+;   (flycheck-add-next-checker 'python-pylint 'python-flake8))
+; 
+; ; 系统中的环境变量不对,所以只能手动指定语法检查器路径
+; (setq flycheck-python-pylint-executable "D:/python/Scripts/pylint.exe")
+; (setq flycheck-python-flake8-executable "D:/python/Scripts/flake8.exe")
+; ; shell-check 可以正常调用
+; ; c-lang 可以正常调用
+
 
 
 
@@ -227,7 +254,9 @@
 
 ;; 设置默认字体
 ; 微软雅黑 PragmataPro Mono 这字体不支持斜体
-(set-face-attribute 'default nil :font (font-spec :family "微软雅黑 PragmataPro Mono" :size 22))
+(set-face-attribute 'default nil :font (font-spec :family "MSYH PragmataPro Mono" :size 22))
+; 下面这个字体英文等宽,但是和中文无法对齐
+; (set-face-attribute 'default nil :font (font-spec :family "Yahei Fira Icon Hybrid" :size 12))
 
 ;; buffer修改后标题显示一个点号
 (setq frame-title-format
@@ -490,6 +519,7 @@
 (ac-config-default)
 (global-auto-complete-mode t)
 (add-to-list 'ac-modes 'markdown-mode)
+(add-to-list 'ac-modes 'dokuwiki-mode)
 (add-to-list 'ac-modes 'perl-mode)
 (add-to-list 'ac-modes 'c-mode-common-mode)
 (add-to-list 'ac-modes 'c-mode)
@@ -499,7 +529,8 @@
 (add-to-list 'ac-modes 'sh-mode)
 ;; C-h v major-mode 查看当前主模式
 (add-to-list 'ac-modes 'bash-ts-mode)
-
+; 仿佛tree-sit的模式不是prog-mode的派生(但是某些情况下prog-mode确有效,不知道原因)
+; (add-to-list 'ac-modes 'prog-mode)
 
 
 ;; :TODO: 这里可能能这样简化
@@ -807,22 +838,24 @@
 
 
 
-(setq counsel-etags-update-interval 60)
-(add-hook 'prog-mode-hook
-  (lambda () (add-hook 'after-save-hook
-                       'counsel-etags-virtual-update-tags 'append 'local)))
-
-
 ;; 自动更新
+(setq counsel-etags-update-interval 6)
 ;; Don't ask before rereading the TAGS files if they have changed
 (setq tags-revert-without-query t)
 ;; Don't warn when TAGS files are large
 (setq large-file-warning-threshold nil)
 ;; Setup auto update now
+; 目前发现的问题是虚拟更新不行,只能使用下面的强制更新
+; (add-hook 'prog-mode-hook
+;   (lambda ()
+;     (add-hook 'after-save-hook
+;               'counsel-etags-virtual-update-tags 'append 'local)))
+
+; :TODO: 如果开启比较卡可以考虑关闭
 (add-hook 'prog-mode-hook
   (lambda ()
     (add-hook 'after-save-hook
-              'counsel-etags-virtual-update-tags 'append 'local)))
+              'counsel-etags-update-tags-force 'append 'local)))
 
 ;; 设置排除目录
 ;; (with-eval-after-load 'counsel-etags
@@ -921,6 +954,10 @@ EVENT is the mouse event."
 (global-git-gutter+-mode)
 (evil-define-key 'normal global-map (kbd "[[") 'git-gutter+-previous-hunk)
 (evil-define-key 'normal global-map (kbd "]]") 'git-gutter+-next-hunk)
+
+; 虽然上面的插件比较老不过也够用,下面这个暂时屏蔽
+; (global-git-gutter-mode +1)
+
 
 ;; :TODO: eglot与auto-complete的配合(不是很容易,eglot和company-mode配合比较好)
 
@@ -1189,6 +1226,7 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
   ;; Bind your frequently used commands.  Alternatively, you can define them
   ;; in `citre-mode-map' so you can only use them when `citre-mode' is enabled.
   (evil-define-key 'normal 'global (kbd "\\cj") 'citre-jump)
+  (evil-define-key 'normal 'global (kbd "\\cr") 'citre-jump-to-reference)
   (evil-define-key 'normal 'global (kbd "\\cb") 'citre-jump-back)
   (evil-define-key 'normal 'global (kbd "\\ca") 'citre-ace-peek)
   (evil-define-key 'normal 'global (kbd "\\cp") 'citre-peek)
@@ -1362,6 +1400,26 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
   (lambda ()
     (interactive)
     (shell-command (concat "gvim " (buffer-file-name)))))
+
+(defun revert-buffer-no-confirm ()
+  "Revert buffer without confirmation."
+  (interactive)
+  (revert-buffer :ignore-auto :noconfirm))
+(global-set-key (kbd "C-c r") 'revert-buffer-no-confirm)
+
+ (use-package dired-subtree
+  :ensure t
+  :after dired
+  :config
+  (bind-key "<tab>" 'dired-subtree-toggle dired-mode-map)
+  (bind-key "C-<tab>" 'dired-subtree-cycle dired-mode-map))
+
+(require 'back-button)
+(back-button-mode 1)
+;; press the plus sign in the toolbar to create a mark
+;; press the arrows in the toolbar to navigate marks
+;; or use C-x C-Space as usual, then try C-x C-<right>
+;; to reverse the operation
 
 
 ;; 禁用启动屏幕
