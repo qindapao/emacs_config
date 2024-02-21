@@ -9,8 +9,8 @@
 (set-selection-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
-
-(setq default-buffer-file-coding-system 'utf-8-unix)
+(setq default-buffer-file-coding-system 'gb2312)
+; (setq default-buffer-file-coding-system 'utf-8-unix)
 
 ;; 系统中的find命令太多了，指定它的路径(使用windows默认的find会出问题)
 ;; :TODO: 如果其它依赖的二进制文件(比如grep git等)也找到的不是正确的路径,也需要变量指定
@@ -99,7 +99,7 @@
                           evil
                           impatient-mode
                           flymake-shellcheck
-                          flycheck
+                          ; flycheck
                           counsel-etags
                           evil-search-highlight-persist
                           evil-visualstar
@@ -219,9 +219,9 @@
 (add-hook 'python-ts-mode-hook 'flymake-mode)
 (add-hook 'sh-mode-hook 'flymake-shellcheck-load)
 (add-hook 'bash-ts-mode-hook 'flymake-shellcheck-load)
-; ; ; 这个可能不是必要的
-; ; (setq flymake-python-pyflakes-executable "D:/python/Scripts/flake8.exe")
-; ; (setq flymake-python-pylint-executable "D:/python/Scripts/pylint.exe")
+; ; 这个可能不是必要的
+; (setq flymake-python-flake8-executable "D:/python/Scripts/flake8.exe")
+; (setq flymake-python-pylint-executable "D:/python/Scripts/pylint.exe")
 
 
 ; flycheck 有点卡暂时屏蔽
@@ -1396,10 +1396,13 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
 
 
 ;; 通过gvim来打开当前文件
+;; 通过gvim来打开当前文件，并定位到当前的行
 (evil-define-key 'normal 'global (kbd "\\ov")
   (lambda ()
     (interactive)
-    (shell-command (concat "gvim " (buffer-file-name)))))
+    (let ((line-number (line-number-at-pos)))
+      (shell-command (concat "gvim +" (number-to-string line-number) " " (buffer-file-name))))))
+
 
 (defun revert-buffer-no-confirm ()
   "Revert buffer without confirmation."
@@ -1414,10 +1417,16 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
   (bind-key "<tab>" 'dired-subtree-toggle dired-mode-map)
   (bind-key "C-<tab>" 'dired-subtree-cycle dired-mode-map))
 
+; dired不显示文件详情,使用(来切换(就是左小括号键)
+(add-hook 'dired-mode-hook #'dired-hide-details-mode)
+
 (require 'back-button)
 (back-button-mode 1)
+ 
 ;; press the plus sign in the toolbar to create a mark
+ 
 ;; press the arrows in the toolbar to navigate marks
+ 
 ;; or use C-x C-Space as usual, then try C-x C-<right>
 ;; to reverse the operation
 
@@ -1435,4 +1444,8 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
   (unless (buffer-file-name)
     (recentf-open-files)))
 (add-hook 'emacs-startup-hook 'check-file-or-show-recent)
+
+; 自动加载服务
+(add-hook 'emacs-startup-hook 'server-start)
+
 
