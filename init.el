@@ -1424,11 +1424,30 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
 (back-button-mode 1)
  
 ;; press the plus sign in the toolbar to create a mark
- 
 ;; press the arrows in the toolbar to navigate marks
- 
 ;; or use C-x C-Space as usual, then try C-x C-<right>
 ;; to reverse the operation
+
+; 如果没有版本管理系统,那么确定项目根目录的方法
+(require 'project)
+(defun locate-local-project-root (dir)
+  "Determine if DIR is a non-Git project."
+  (let ((root (or (locate-dominating-file dir ".project")
+                  (locate-dominating-file dir ".root"))))
+    (and root (cons 'transient root))))
+(add-to-list 'project-find-functions #'locate-local-project-root)
+
+; 打开ibuffer
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(defun auto-refresh-ibuffer (&optional frame)
+  (when (and (get-buffer "*Ibuffer*")
+             (get-buffer-window "*Ibuffer*"))
+    (with-current-buffer "*Ibuffer*"
+      (when (derived-mode-p 'ibuffer-mode)
+        (ibuffer-update nil t)
+        (force-window-update (get-buffer-window "*Ibuffer*"))
+        (message "auto-refresh-ibuffer function called")))))
+(add-hook 'buffer-list-update-hook 'auto-refresh-ibuffer)
 
 
 ;; 禁用启动屏幕
