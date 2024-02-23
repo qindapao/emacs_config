@@ -9,8 +9,8 @@
 (set-selection-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
-(setq default-buffer-file-coding-system 'gb2312)
-; (setq default-buffer-file-coding-system 'utf-8-unix)
+(setq default-file-name-coding-system 'gb2312)
+(setq default-buffer-file-coding-system 'utf-8-unix)
 
 ;; 系统中的find命令太多了，指定它的路径(使用windows默认的find会出问题)
 ;; :TODO: 如果其它依赖的二进制文件(比如grep git等)也找到的不是正确的路径,也需要变量指定
