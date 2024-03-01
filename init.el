@@ -132,6 +132,10 @@
                           symbol-overlay
                           dired-subtree
                           back-button
+                          windresize
+                          evil-anzu
+                          vimish-fold
+                          evil-vimish-fold
                           ))
 
 (dolist (package my-package-list)
@@ -142,9 +146,10 @@
 ;; 默认情况下，将TAB替换为4个空格
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
+(setq c-basic-offset 4)
 
 ;; 大小写字母和下划线作为一个整体
-; (global-subword-mode 1)
+(global-subword-mode 1)
 
 ;; 自动加载文件变化
 (global-auto-revert-mode t)
@@ -191,7 +196,7 @@
 
 ;; 智能滚动条===={
 ;; 隐藏水平滚动条
-(horizontal-scroll-bar-mode -1)
+; (horizontal-scroll-bar-mode -1)
 ; (global-yascroll-bar-mode 1)   ;; 暂时不用这个，用系统的滚动条
 (add-to-list 'default-frame-alist '(scroll-bar-width . 18))
 ;; 智能滚动条====}
@@ -213,12 +218,12 @@
 
 
 
-;; shell文件就打开shell_check
-(add-hook 'sh-mode-hook 'flymake-mode)
-(add-hook 'bash-ts-mode-hook 'flymake-mode)
-(add-hook 'python-ts-mode-hook 'flymake-mode)
-(add-hook 'sh-mode-hook 'flymake-shellcheck-load)
-(add-hook 'bash-ts-mode-hook 'flymake-shellcheck-load)
+;; shell文件就打开shell_check(非常卡,改成手动调用)
+; (add-hook 'sh-mode-hook 'flymake-mode)
+; (add-hook 'bash-ts-mode-hook 'flymake-mode)
+; (add-hook 'python-ts-mode-hook 'flymake-mode)
+; (add-hook 'sh-mode-hook 'flymake-shellcheck-load)
+; (add-hook 'bash-ts-mode-hook 'flymake-shellcheck-load)
 ; ; 这个可能不是必要的
 ; (setq flymake-python-flake8-executable "D:/python/Scripts/flake8.exe")
 ; (setq flymake-python-pylint-executable "D:/python/Scripts/pylint.exe")
@@ -244,7 +249,7 @@
 ;; 开启全局行号显示
 (global-display-line-numbers-mode t)
 ;; 设置行号类型为相对行号
-(setq display-line-numbers-type 'relative)
+; (setq display-line-numbers-type 'relative)
 
 ;; 让滚动条更平滑(有像素滚动，这个没有必要使用了)
 ;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; 鼠标滚轮滚动一行
@@ -342,7 +347,7 @@
 (electric-pair-mode 1)
 (setq electric-pair-pairs
       '(
-        (?< . ?>) ;; 添加尖括号补齐
+        ; (?< . ?>) ;; 添加尖括号补齐
         (?\' . ?\') ;; 单引号
         (?\" . ?\") ;; 双引号
         (?~ . ?~) ;; 删除线
@@ -586,8 +591,12 @@
 ; 取消helm的自动补全功能(使用默认的弹出菜单)
 (setq helm-mode-handle-completion-in-region nil)
 (global-set-key (kbd "C-M-u") 'hippie-expand)
-;; 有弹出菜单，只能在当前缓冲区中查找
-(global-set-key (kbd "C-u") 'dabbrev-completion)
+;; 有弹出菜单，只能在当前缓冲区中查找(auto-complete已经开启了字符串中查找,这里可以取消了)
+; (global-set-key (kbd "C-u") 'dabbrev-completion)
+; C-u 和gvim中一致绑定为往上滚动半屏
+(define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+
+
 
 
 (define-key minibuffer-local-map (kbd "C-n") 'next-history-element)
@@ -666,6 +675,11 @@
   (add-to-list 'ac-sources 'ac-source-gtags))
 
 
+; 在双引号或者单引号的字符串中也开启补全功能,和gvim的功能保持一致
+; 这行配置的意思是把字符串faces从auto-complete的禁用列表中移除(如果后续还需要移除别的,也可以操作这里)
+(setq ac-disable-faces (delq 'font-lock-string-face ac-disable-faces))
+
+
 (add-hook 'markdown-mode-hook 'add-custom-ac-sources)
 
 ;; :TODO:搞清楚为什么这个模式才是对的
@@ -687,17 +701,15 @@
   
 ;; 高亮光标下的符号
 ; (require 'highlight-symbol)
-; ;; :TODO: 星号搜索不跳转当前不行(目前的实现方法都不优雅)
 ; (evil-define-key 'normal global-map (kbd "#") 'highlight-symbol)
 ; (evil-define-key 'normal global-map (kbd "<f3>") 'highlight-symbol-next)
 ; (evil-define-key 'normal global-map (kbd "S-<f3>") 'highlight-symbol-prev)
 ; (evil-define-key 'normal global-map (kbd "M-<f3>") 'highlight-symbol-query-replace)
 ; (evil-define-key 'normal global-map (kbd "\\hx") 'highlight-symbol-remove-all)
 
-;; :TODO: 星号搜索不跳转当前不行(目前的实现方法都不优雅)
-(evil-define-key 'normal global-map (kbd "#") 'symbol-overlay-put)
+(evil-define-key 'normal global-map (kbd "C-#") 'symbol-overlay-put)
 ;; 下面这个绑定似乎没有效果
-(evil-define-key 'visual global-map (kbd "#") 'symbol-overlay-put)
+(evil-define-key 'visual global-map (kbd "C-#") 'symbol-overlay-put)
 (evil-define-key 'normal global-map (kbd "<f3>") 'symbol-overlay-switch-forward)
 (evil-define-key 'normal global-map (kbd "S-<f3>") 'symbol-overlay-switch-backward)
 (evil-define-key 'normal global-map (kbd "M-<f3>") 'symbol-overlay-mode)
@@ -1395,13 +1407,13 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
 
 
 
-;; 通过gvim来打开当前文件
 ;; 通过gvim来打开当前文件，并定位到当前的行
 (evil-define-key 'normal 'global (kbd "\\ov")
   (lambda ()
     (interactive)
-    (let ((line-number (line-number-at-pos)))
-      (shell-command (concat "gvim +" (number-to-string line-number) " " (buffer-file-name))))))
+    (let ((line-number (number-to-string (line-number-at-pos)))
+          (file-name (encode-coding-string (buffer-file-name) 'gb2312)))
+      (start-process "gvim" nil "gvim" (concat "+" line-number) file-name))))
 
 
 (defun revert-buffer-no-confirm ()
@@ -1450,6 +1462,88 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
 (add-hook 'buffer-list-update-hook 'auto-refresh-ibuffer)
 
 
+; 默认设置水平滚动条和不换行
+; (setq truncate-lines t)
+(setq-default truncate-lines t)
+(horizontal-scroll-bar-mode t)
+(defun toggle-wrap-and-hscroll ()
+  "Toggle line wrapping and horizontal scroll bar."
+  (interactive)
+  (if (eq truncate-lines nil)
+      (progn
+        (setq truncate-lines t)
+        (horizontal-scroll-bar-mode t))
+    (progn
+        (setq truncate-lines nil)
+        (horizontal-scroll-bar-mode -1))))
+; 切换换行和不换行
+(global-set-key (kbd "C-c w") 'toggle-wrap-and-hscroll)
+
+; https://emacs.stackexchange.com/questions/52411/evil-star-visualstar-without-moving-the-cursor
+(evil-select-search-module 'evil-search-module 'evil-search)
+
+(defun my/star-keep-position ()
+  (interactive)
+  (let ((symbol (thing-at-point 'symbol t))
+        (orig-pos (point)))  ; Save original position
+    (if symbol
+        (progn
+          (setq evil-ex-search-pattern (evil-ex-make-search-pattern symbol))
+          (setq evil-ex-search-direction 'forward)
+          (evil-ex-search-next)
+          (evil-ex-search-previous)
+          (goto-char orig-pos)  ; Restore original position
+          (evil-normal-state))
+      (message "No symbol at point"))))
+
+(defun my/visualstar-keep-position ()
+  (interactive)
+  (when (region-active-p)
+    (let ((orig-pos (point)))  ; Save original position
+      (evil-visualstar/begin-search (region-beginning) (region-end) t)
+      ; 下面的三句话可以不要
+      ; (cl-case evil-search-module
+      ;   (evil-search (evil-ex-search-previous))
+      ;   (isearch (evil-search-previous)))
+      (goto-char (max (1- orig-pos) (point-min))))))  ; Move cursor one character back
+
+(evil-define-key 'normal global-map (kbd "*") 'my/star-keep-position)
+(evil-define-key 'visual evil-visualstar-mode-map (kbd "*") 'my/visualstar-keep-position)
+(defun my/clear-search-highlight ()
+  "Clears the search highlight."
+  (interactive)
+  (evil-ex-nohighlight))
+(evil-define-key 'normal global-map (kbd "#") 'my/clear-search-highlight)
+
+(require 'windresize)
+(global-set-key (kbd "<f5>") 'windresize)
+
+; 在状态栏显示搜索数量和标号(:TODO:目前发现并没有效果,可能被别的东西覆盖)
+(with-eval-after-load 'evil
+  (require 'evil-anzu))
+; 窗口的重做和撤销模式
+(winner-mode 1)
+(global-set-key (kbd "<f6>") 'winner-undo)
+(global-set-key (kbd "<f7>") 'winner-redo)
+
+; 在当前的缓冲区中把所有的TAB转换为空格
+; (untabify (point-min) (point-max))
+; 三次单击鼠标左键是选择行，然后可以往下或者往上拖动选择区域
+
+; 打开鼠标拖动文本的功能(需要在evil的插入模式下拖动)
+(setq mouse-drag-and-drop-region t)
+
+; 显示空白字符
+; (global-whitespace-mode t)
+
+; 模拟vim的代码折叠(:TODO: 功能好像是有问题的)
+(require 'evil-vimish-fold)
+(evil-vimish-fold-mode 1)
+
+; 格式化选定区域
+(evil-define-key 'normal global-map (kbd "TAB") 'evil-indent)
+
+
 ;; 禁用启动屏幕
 (setq inhibit-startup-screen t)
 ;; 启用打开最近文件功能
@@ -1466,5 +1560,4 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
 
 ; 自动加载服务
 (add-hook 'emacs-startup-hook 'server-start)
-
 
