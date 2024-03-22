@@ -375,8 +375,8 @@
 (evil-define-key 'normal global-map (kbd "C-S-k") 'evil-window-up)
 
 ;; 定义向前和向后跳转
-(evil-define-key 'normal global-map (kbd "C-i") 'evil-jump-forward)
-
+(evil-define-key 'normal 'global (kbd "C-S-i") nil)
+(evil-define-key 'normal 'global (kbd "C-S-i") 'evil-jump-forward)
 
 
 ;; 修正Evil的单词边界问题(:TODO:暂时不修复,因为修复可能有别的问题)
