@@ -5,6 +5,8 @@ emacs config for my personal use
 
 可以在这个[链接](https://mirrors.ustc.edu.cn/gnu/emacs/windows/emacs-29/)找到windows版本的安装包。选择`zip`的压缩包可以不用安装直接使用。
 
+当前我使用的是：`29.2`版本，后面可以尝试更新的版本。
+
 安装启动`emacs`后，初始配置和安装包在这个目录: `C:\Users\pc\AppData\Roaming\.emacs.d`。具体的目录以你当前登录的用户名而定。
 
 在这个目录下可以创建一个`init.el`文件，我们可以把我们的配置放这里。`emacs`加载配置文件的顺序是：
