@@ -1252,7 +1252,59 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
   (define-key evil-motion-state-map (kbd "<up>") nil)
   (define-key evil-motion-state-map (kbd "<down>") nil)
   
-  
+  ; 这里的使用方法是这样的
+  ; M-l p 会出现跳转的关键字，然后按相应的快捷键执行跳转(跳转peek窗口中的符号)
+  ; M-l j 当我们的peek窗口处于某个符号的时候，这个快捷键是跳转到对应的符号位置
+  ; 如果浏览的过程中出现了分支,那么键盘上的上下键用于决定左右键浏览哪个分支
+  ; 如果要使用citre生成个性化的Universe Ctags的数据库文件，
+  ; 1. 执行citre-create-tags-file命令
+  ; 2. 然后出现一个说明文件：ctags-command-line* 的buffer，如果是生成perl的标签，像这样填写
+  ;  # This block is the help message.
+  ;  #
+  ;  # The next block is the Universal Ctags option file. Put one
+  ;  # command line argument per line. Comments start with "#"
+  ;  #
+  ;  # The last block contains the files to scan, one file/dir per
+  ;  # line. You can use paths relative to e:/code/P5-App-Asciio/.
+  ;  #
+  ;  # Commands:
+  ;  #
+  ;  # - C-c l: Insert a language
+  ;  # - C-c f: Insert a dir or file
+  ;  # - C-c C-c: Save, close and update the tags file
+  ;  # - C-c C-k: Cancel
+  ;  ---------------8<---------------
+  ;  -o
+  ;  c:/Users/pc/AppData/Roaming/.cache/tags/e%;!code!P5-App-Asciio!.tags
+  ;  -L
+  ;  c:/Users/pc/AppData/Roaming/.cache/tags/e%;!code!P5-App-Asciio!.list
+  ;  # Programming languages to be scanned, or "all" for all supported languages
+  ;  --languages=perl
+  ;  --kinds-all=*
+  ;  --fields=*
+  ;  --extras=*
+  ;  --recurse
+  ;  ---------------8<---------------
+  ;  .
+  ;    
+  ; 其它的东西都默认就好，主要就是--languages这里，填写当前需要生成标签的语言，设置完成后按 C-c C-c保存配置
+  ; 然后生成的配置文件会在类似下面这种目录下
+  ; C:\Users\pc\AppData\Roaming\.cache\tags
+  ;     e%;!code!P5-App-Asciio!.ctags
+  ;     e%;!code!P5-App-Asciio!.list
+  ;     e%;!code!P5-App-Asciio!.tags(这个就是我们的ctags文件，如果大小太小就是不对的)
+  ;     生成完成后需要检查下这三个文件中的内容是否正确
+  ;
+  ; citre有个问题是不能自动更新Universal Ctags标签，需要手动执行下面的命令
+  ;     citre-update-tags-file
+  ;     citre-update-this-tags-file
+  ;
+  ; 如果没有特别的要求，使用gtags或者用global，第一次使用手动使用命令 ggtags-create-tags命令生成标签
+  ; 但是有个问题是第一次生成的gtags文件不能被识别，要关闭emasc后再打开才行(不过好处是生成后后的文件就是自动更新的了)
+  ;
+  ;
+  ; 生成的TAGS是etags的文件，不能用于这里
+  ;
   ; M-n, M-p: Next/prev line.                 ok
   ; M-N, M-P: Next/prev definition.           ok(如果一个定义在多个源文件中,这里可以选择我们想要的那一个,然后按M-l f把它设置为第一个，然后就可以来回跳转了)
   ; M-l j: Jump to the definition.            ok
@@ -1262,8 +1314,8 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
   ; <left>和<right> 在标记历史记录中移动
   ; S-<up>和S-<down> 上下移动定义
   ; M-l f 设定为第一个定义
-  ; M-l d 删除符号后的当前分支
-  ; M-l D 删除符号后的所有分支
+  ; M-l d 删除符号后的当前分支                ok
+  ; M-l D 删除符号后的所有分支                ok
   ; citre-peek-save-session 只在当前session有效,并不保存磁盘
   ; citre-peek-load-session 只在当前session有效,并不保存磁盘
   
@@ -1303,7 +1355,7 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
    ; 下面的设置并没有作用
    citre-tags-files '(".citre_tags")
    ;; Set these if gtags/global is not in your PATH (and you want to use the
-   ;; global backend)
+   ;; global backend) 如果找不到程序这里可以手动指定
    ; citre-gtags-program "/path/to/gtags"
    ; citre-global-program "/path/to/global"
    ;; Set this if you use project management plugin like projectile.  It's
@@ -1561,3 +1613,10 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
 ; 自动加载服务
 (add-hook 'emacs-startup-hook 'server-start)
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(zim-wiki-mode yasnippet winum windresize whitespace-cleanup-mode which-key w32-browser vdiff-magit undo-fu symbol-overlay spaceline rainbow-delimiters projectile-ripgrep pkg-info neotree modus-themes markdown-mode impatient-mode imenu-list highlight-symbol helm-rg git-gutter git-gutter+ ggtags flymake-shellcheck find-file-in-project expand-region evil-visualstar evil-visual-mark-mode evil-vimish-fold evil-surround evil-search-highlight-persist evil-matchit evil-lion evil-commentary evil-anzu elscreen dired-subtree diff-hl counsel-etags corfu citre back-button all-the-icons-nerd-fonts ac-etags)))
