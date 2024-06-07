@@ -1,5 +1,28 @@
 ;; :TODO: 暂时先固化这个配置,有时间再来调整它的顺序
 
+; 按键组->辅助
+; 按键组->补全
+; 按键组->标签导航
+; 按键组->书签
+; 按键组->命令
+; 按键组->其它
+; 按键组->高亮
+; 按键组->窗口管理
+; 按键组->目录树
+; 按键组->跳转
+; 按键组->markdown
+; 按键组->git
+; 按键组->undo
+; 按键组->搜索
+; 按键组->编辑
+; 按键组->zim
+; 按键组->格式化
+; 按键组->终端
+; 按键组->多标签
+; 按键组->文件
+
+; 备注: 为了防止映射的关键字和文件中别的注释冲突,所以比如"搜索"这种关键字在某些地方的注释中变成了"搜 索"，中间用一个空格区分开了。其它的关键字也类似。
+
 ;; 设置默认的编码环境
 
 (set-buffer-file-coding-system 'utf-8)
@@ -136,6 +159,7 @@
                           evil-anzu
                           vimish-fold
                           evil-vimish-fold
+                          highlight-indentation
                           ))
 
 (dolist (package my-package-list)
@@ -166,16 +190,29 @@
 (require 'evil)
 (evil-mode 1)
 
-;; 开启全词搜索(不然下划线会认为不是单词一部分)
+(require 'highlight-indentation)
+(set-face-background 'highlight-indentation-face "#e3e3d3")
+(set-face-background 'highlight-indentation-current-column-face "#c3b3b3")
+; (add-hook 'prog-mode-hook 'highlight-indentation-mode)
+; (add-hook 'prog-mode-hook 'highlight-indentation-current-column-mode)
+(add-hook 'after-change-major-mode-hook 'highlight-indentation-mode)
+(add-hook 'after-change-major-mode-hook 'highlight-indentation-current-column-mode)
+
+;; 开启全词搜 索(不然下划线会认为不是单词一部分)
 (setq evil-symbol-word-search t)
 
 (require 'spaceline-config)
 (spaceline-spacemacs-theme)
 
 
+
+;; 改善滚动条的滚动? 依然很卡
+(setq scroll-conservatively 101) ;; move minimum when cursor exits view, instead of recentering
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 5))) ;; mouse scroll moves 1 line at a time, instead of 5 lines
+
 ;; 如果想跟踪软链接目录,可以写个脚本更新项目根目录下的gtags.files文件
 ;; 启动和切换ggtags模式(目前已经开启自动加载下面这个无用了)
-(evil-define-key 'normal global-map (kbd "\\g") 'ggtags-mode)
+(evil-define-key 'normal global-map (kbd "\\g") 'ggtags-mode) ; 标签导航:切换ggtags模式(这个无用,因为当前已经开启了自动加载)
 (require 'ggtags)
 (add-hook 'prog-mode-hook 'ggtags-mode)
 
@@ -208,7 +245,7 @@
 
 
 ;; 打开所有的vim标记列表
-(evil-define-key 'normal global-map (kbd "\\sm") 'counsel-evil-marks)
+(evil-define-key 'normal global-map (kbd "\\sm") 'counsel-evil-marks) ; 书签:打开所有的vim标记列表
 
 
 ;; 对于perl-mode，保留TAB
@@ -338,7 +375,7 @@
 
 
 ;; Evil和emacs切换
-(global-set-key (kbd "C-c C-z") 'evil-emacs-state)
+(global-set-key (kbd "C-c C-z") 'evil-emacs-state) ; 其它:Evil和emacs模式切换
 
 
 
@@ -365,18 +402,18 @@
 
 
 ;; 重新映射窗口分屏
-(evil-define-key 'normal global-map (kbd "\\vv") 'split-window-right)
-(evil-define-key 'normal global-map (kbd "\\ss") 'split-window-below)
-(evil-define-key 'normal global-map (kbd "\\cw") 'delete-window)
-(evil-define-key 'normal global-map (kbd "\\ow") 'delete-other-windows)
-(evil-define-key 'normal global-map (kbd "C-S-h") 'evil-window-left)
-(evil-define-key 'normal global-map (kbd "C-S-l") 'evil-window-right)
-(evil-define-key 'normal global-map (kbd "C-S-j") 'evil-window-down)
-(evil-define-key 'normal global-map (kbd "C-S-k") 'evil-window-up)
+(evil-define-key 'normal global-map (kbd "\\vv") 'split-window-right)    ; 窗口管理:
+(evil-define-key 'normal global-map (kbd "\\ss") 'split-window-below)    ; 窗口管理:
+(evil-define-key 'normal global-map (kbd "\\cw") 'delete-window)         ; 窗口管理:
+(evil-define-key 'normal global-map (kbd "\\ow") 'delete-other-windows)  ; 窗口管理:
+(evil-define-key 'normal global-map (kbd "C-S-h") 'evil-window-left)     ; 窗口管理:
+(evil-define-key 'normal global-map (kbd "C-S-l") 'evil-window-right)    ; 窗口管理:
+(evil-define-key 'normal global-map (kbd "C-S-j") 'evil-window-down)     ; 窗口管理:
+(evil-define-key 'normal global-map (kbd "C-S-k") 'evil-window-up)       ; 窗口管理:
 
 ;; 定义向前和向后跳转
 (evil-define-key 'normal 'global (kbd "C-S-i") nil)
-(evil-define-key 'normal 'global (kbd "C-S-i") 'evil-jump-forward)
+(evil-define-key 'normal 'global (kbd "C-S-i") 'evil-jump-forward)       ; 导航: 向前跳转
 
 
 ;; 修正Evil的单词边界问题(:TODO:暂时不修复,因为修复可能有别的问题)
@@ -391,7 +428,7 @@
 ;; 在markdown的表格中C-x C-d 自动对齐表格
 
 ;; markdown 切换标签的显示与隐藏
-(evil-define-key 'normal markdown-mode-map (kbd "zi") 'markdown-toggle-markup-hiding)
+(evil-define-key 'normal markdown-mode-map (kbd "zi") 'markdown-toggle-markup-hiding)  ; markdown: 切换markup标记显示与隐藏
 
 ;; :TODO: 流畅播放gif,还有一帧一帧播放
 
@@ -421,7 +458,7 @@
 
 
 ;; markdown文件默认打开目录导航栏
-(global-set-key (kbd "<f4>") 'imenu-list-smart-toggle)
+(global-set-key (kbd "<f4>") 'imenu-list-smart-toggle) ; 标签导航: 打开标题树
 
 
 ;; 使用zim-wiki-mode
@@ -436,15 +473,15 @@
 ;; (setq pasteex-executable-path "D:/programs/emasc/bin/PasteEx.exe")
 ; (setq pasteex-macos-executable-path "D:/img/demo.png")
 (setq pasteex-image-dir "img/")
-(global-set-key (kbd "C-c p j") 'pasteex-image)
-(global-set-key (kbd "C-c p x") 'pasteex-delete-img-link-and-file-at-line)
+(global-set-key (kbd "C-c p j") 'pasteex-image) ; markdown:zim: 粘贴图片
+(global-set-key (kbd "C-c p x") 'pasteex-delete-img-link-and-file-at-line) ; markdown:zim: 删除粘贴图片源文件和链接
 
 ;; 删除图片
 
 ;; 更新图片显示
-(evil-define-key 'normal markdown-mode-map (kbd "z p") 'markdown-display-inline-images)
+(evil-define-key 'normal markdown-mode-map (kbd "z p") 'markdown-display-inline-images) ; markdown: 更新图片显示
 ;; 切换图片显示
-(evil-define-key 'normal markdown-mode-map (kbd "z k") 'markdown-toggle-inline-images)
+(evil-define-key 'normal markdown-mode-map (kbd "z k") 'markdown-toggle-inline-images)  ; markdown: 切换图片显示
 
 
 ;; Evil-surround
@@ -458,12 +495,11 @@
 ;; :TODO: 以后还可以考虑使用vundo,听说更好用
 
 (require 'undo-fu)
-(define-key evil-normal-state-map (kbd "C-z") 'undo-fu-only-undo)
-(define-key evil-normal-state-map (kbd "C-y") 'undo-fu-only-redo)
+(define-key evil-normal-state-map (kbd "C-z") 'undo-fu-only-undo) ; undo: 撤销
+(define-key evil-normal-state-map (kbd "C-y") 'undo-fu-only-redo) ; undo: 重做
 
-;; 保存文件和即时搜索对调
-(define-key evil-normal-state-map (kbd "C-s") 'save-buffer)
-(define-key evil-normal-state-map (kbd "C-x C-s") 'isearch-forward)
+(define-key evil-normal-state-map (kbd "C-s") 'save-buffer) ; 文件: 保存文件
+(define-key evil-normal-state-map (kbd "C-x C-s") 'isearch-forward) ; 搜索: 即时搜索
 
 ;; 所有的临时文件保存到固定文件目录
 (setq auto-save-file-name-transforms
@@ -489,7 +525,7 @@
 ;; 
 ;; 
 ;; (with-eval-after-load 'company
-;;   (define-key evil-insert-state-map (kbd "C-n") 'company-complete))
+;;   (define-key evil-insert-state-map (kbd "C-n") 'company-complete)) ; 补全: ?
 ;; 
 ;; ;; buffer中的单词补全
 ;; (with-eval-after-load 'company
@@ -566,41 +602,40 @@
 (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
 
 (add-to-list 'ac-sources 'ac-source-words-in-buffer)
-(define-key ac-completing-map (kbd "C-n") 'ac-next)
-(define-key ac-completing-map (kbd "C-p") 'ac-previous)
+(define-key ac-completing-map (kbd "C-n") 'ac-next)       ; 补全:下一个
+(define-key ac-completing-map (kbd "C-p") 'ac-previous)   ; 补全:上一个
 (define-key yas-minor-mode-map (kbd "<tab>") nil)
 (define-key yas-minor-mode-map (kbd "TAB") nil)
-(define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-expand)
+(define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-expand) ; 补全:代码片段: 展开代码片段
 
 (add-hook 'markdown-mode-hook 'yas-minor-mode)
 
 
 
-;; 解决引号中的补全问题(使用emacs默认自带的补全)
-;; (global-set-key (kbd "C-u") 'dabbrev-expand)
+;; (global-set-key (kbd "C-u") 'dabbrev-expand) ; 补全: 解决引号中的补全问题(使用emacs默认自带的补全,当前并没有使用了)
 (require 'dabbrev)
-;; 不区分大小写搜索 :TODO: 设置了也没有用,后面再看下
+;; 不区分大小写搜 索 :TODO: 设置了也没有用,后面再看下
 (setq dabbrev-case-fold-search t)
 (setq dabbrev-upcase-means-case-search nil)
 
-;; :TODO: 这两个设置两也没用,dabbrev-completion还是只在当前缓冲区中搜索
+;; :TODO: 这两个设置两也没用,dabbrev-completion还是只在当前缓冲区中搜 索
 (setq dabbrev-check-all-buffers t)
 (setq dabbrev-check-other-buffers t)
 
 ;; 没有弹出菜单，但是可以在所有的缓冲区中查找
 ; 取消helm的自动补全功能(使用默认的弹出菜单)
 (setq helm-mode-handle-completion-in-region nil)
-(global-set-key (kbd "C-M-u") 'hippie-expand)
+(global-set-key (kbd "C-M-u") 'hippie-expand) ; 命令: 命令搜索模式下的单词补全
 ;; 有弹出菜单，只能在当前缓冲区中查找(auto-complete已经开启了字符串中查找,这里可以取消了)
 ; (global-set-key (kbd "C-u") 'dabbrev-completion)
 ; C-u 和gvim中一致绑定为往上滚动半屏
-(define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+(define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up) ;窗口管理: 上滚半屏
 
 
 
 
-(define-key minibuffer-local-map (kbd "C-n") 'next-history-element)
-(define-key minibuffer-local-map (kbd "C-p") 'previous-history-element)
+(define-key minibuffer-local-map (kbd "C-n") 'next-history-element) ; 窗口管理: minibuffer下一个元素
+(define-key minibuffer-local-map (kbd "C-p") 'previous-history-element) ; 窗口管理: minibuffer上一个元素
 
 
 ;; # -*- mode: snippet -*-
@@ -666,7 +701,7 @@
 ;; ==============================}
 
 ;; 重新加载tags文件的变化用于补全
-(define-key evil-normal-state-map (kbd "\\aecc") 'ac-etags-clear-cache)
+(define-key evil-normal-state-map (kbd "\\aecc") 'ac-etags-clear-cache) ; 补全: 重新加载etags文件的变化用于补全
 
 (defun add-custom-ac-sources ()
   (add-to-list 'ac-sources 'ac-source-yasnippet)
@@ -707,13 +742,15 @@
 ; (evil-define-key 'normal global-map (kbd "M-<f3>") 'highlight-symbol-query-replace)
 ; (evil-define-key 'normal global-map (kbd "\\hx") 'highlight-symbol-remove-all)
 
-(evil-define-key 'normal global-map (kbd "C-#") 'symbol-overlay-put)
+; 由于#号在上面，所以这里实际的映射是C-S-#
+(evil-define-key 'normal global-map (kbd "C-#") 'symbol-overlay-put)   ; 高亮: 其实是C-S-#
 ;; 下面这个绑定似乎没有效果
-(evil-define-key 'visual global-map (kbd "C-#") 'symbol-overlay-put)
-(evil-define-key 'normal global-map (kbd "<f3>") 'symbol-overlay-switch-forward)
-(evil-define-key 'normal global-map (kbd "S-<f3>") 'symbol-overlay-switch-backward)
-(evil-define-key 'normal global-map (kbd "M-<f3>") 'symbol-overlay-mode)
-(evil-define-key 'normal global-map (kbd "\\hx") 'symbol-overlay-remove-all)
+(evil-define-key 'visual global-map (kbd "C-#") 'symbol-overlay-put) ; 高亮: 但是没有效果
+(evil-define-key 'normal global-map (kbd "<f3>") 'symbol-overlay-switch-forward) ; 高亮: 向前搜索
+(evil-define-key 'normal global-map (kbd "S-<f3>") 'symbol-overlay-switch-backward) ; 高亮: 向后搜索
+; 这个非常好用,可以临时高亮显示当前关键字
+(evil-define-key 'normal global-map (kbd "M-<f3>") 'symbol-overlay-mode) ; 高亮: 临时高亮当前关键字
+(evil-define-key 'normal global-map (kbd "\\hx") 'symbol-overlay-remove-all) ; 高亮: 取消所有的高亮
 
 
 ;; 安装文件浏览器(all-the-icons)
@@ -726,7 +763,7 @@
   ("<f8>" . neotree-toggle))
 
 ;; ;; 设置neotree的手动刷新
-(evil-define-key 'normal neotree-mode-map (kbd "\\nr") 'neotree-refresh)
+(evil-define-key 'normal neotree-mode-map (kbd "\\nr") 'neotree-refresh) ; 目录树: 更新目录树
 
 
 ;; avy的超级跳转功能(https://github.com/abo-abo/avy)
@@ -737,26 +774,26 @@
 
 ;; 跳转到一个单词
 (with-eval-after-load 'evil
-  (define-key evil-normal-state-map (kbd "C-;") 'avy-goto-word-0))
+  (define-key evil-normal-state-map (kbd "C-;") 'avy-goto-word-0)) ; 跳转: 出现跳转关键字列表
 
 
-;; 使用ivy搜索框架
+;; 使用ivy搜 索框架
 (use-package ivy
   :ensure t
   :diminish ivy-mode
   :hook (after-init . ivy-mode))
 
-(define-key evil-normal-state-map (kbd "\\sw") 'swiper)
+(define-key evil-normal-state-map (kbd "\\sw") 'swiper) ; 搜索: 当前文件快速搜索
 
 
-;; 配置helm搜索
+;; 配置helm搜 索
 (use-package helm
   :ensure t
   :config
   (helm-mode 1)
   (setq helm-autoresize-mode t))
 
-(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "M-x") 'helm-M-x) ; 命令: 启动命令搜索模式
 
 
 ;; 文件查找
@@ -765,7 +802,7 @@
   :after ivy
   :config (counsel-mode))
 
-;; 用fd替换fzf(:TODO:当前遇到问题无法搜索)
+;; 用fd替换fzf(:TODO:当前遇到问题无法搜 索)
 ;; (setq counsel-fzf-cmd "fd --type f --hidden --follow --exclude .git --color never '%s'")
 
 ;; 标签页的映射
@@ -777,15 +814,15 @@
 (require 'elscreen)
 (elscreen-start)
 (with-eval-after-load 'evil
-  (define-key evil-normal-state-map (kbd "tc") 'elscreen-kill)
-  (define-key evil-normal-state-map (kbd "tn") 'elscreen-create)
-  (define-key evil-normal-state-map (kbd "TAB") 'elscreen-next)
+  (define-key evil-normal-state-map (kbd "tc") 'elscreen-kill) ; 多标签: 关闭当前标签页
+  (define-key evil-normal-state-map (kbd "tn") 'elscreen-create) ; 多标签: 创建一个新的标签页
+  (define-key evil-normal-state-map (kbd "TAB") 'elscreen-next) ; 多标签: 切换到下一个标签页
   (define-key evil-normal-state-map (kbd "<S-tab>") 'elscreen-previous))
 
 ;; 数字键切换标签页
 (with-eval-after-load 'evil
   (dotimes (i 10)
-    (define-key evil-normal-state-map (kbd (format "M-%d" i)) `(lambda () (interactive) (elscreen-goto ,i)))))
+    (define-key evil-normal-state-map (kbd (format "M-%d" i)) `(lambda () (interactive) (elscreen-goto ,i))))) ; 多标签: 数字键切换标签页
     
 ;; 关闭其它标签页不要提醒
 (defun my-elscreen-kill-others ()
@@ -796,7 +833,7 @@
   (elscreen-display-screen-name-list)  ;; 刷新 ElScreen 的状态
   (elscreen-notify-screen-modification 'force-immediately)) ;; 马上更新绘图
 
-(evil-define-key 'normal global-map (kbd "to") 'my-elscreen-kill-others)
+(evil-define-key 'normal global-map (kbd "to") 'my-elscreen-kill-others) ; 多标签: 只保留当前标签页
 
 ;; 不存显示标签栏
 (setq elscreen-display-tab nil)
@@ -805,13 +842,11 @@
   (interactive)
   (setq elscreen-display-tab (not elscreen-display-tab))
   (elscreen-notify-screen-modification 'force-immediately))
-(define-key evil-normal-state-map (kbd "\\se") 'toggle-elscreen-tab-display)
+(define-key evil-normal-state-map (kbd "\\se") 'toggle-elscreen-tab-display) ; 多标签: 显示与隐藏标签页
 
 
 
-;; 项目中搜索
-;; 在一个没有项目文件(.git .root)的目录中就可以指定目录进行搜索
-(define-key evil-normal-state-map (kbd "C-p") 'project-find-file)
+(define-key evil-normal-state-map (kbd "C-p") 'project-find-file) ; 搜索: 项目中快速搜索文件. 在一个没有项目文件(.git .root)的目录中就可以指定目录进行搜索
 ;; 还有个更简单的方式是使用M-x cd命令改变工作目录然后运行C-p即可
 
 
@@ -825,9 +860,9 @@
 ;; 设置etags自动更新
 (require 'counsel-etags)
 ;; 普通模式
-(evil-define-key 'normal 'global (kbd "C-]") 'counsel-etags-find-tag-at-point)
+(evil-define-key 'normal 'global (kbd "C-]") 'counsel-etags-find-tag-at-point) ; 标签导航: 使用etags跳转到符号定义
 ;; 可视模式
-(evil-define-key 'visual 'global (kbd "C-]") 'counsel-etags-find-tag-at-point)
+(evil-define-key 'visual 'global (kbd "C-]") 'counsel-etags-find-tag-at-point) ; 标签导航: 使用etags跳转到符号定义
 
 
 
@@ -838,15 +873,15 @@
     (select-window current-window)
     (counsel-etags-find-tag-at-point)))
 ;; 分屏跳转
-(evil-define-key 'normal 'global (kbd "C-w ]") 'my-find-tag-other-window)
-(evil-define-key 'visual 'global (kbd "C-w ]") 'my-find-tag-other-window)
+(evil-define-key 'normal 'global (kbd "C-w ]") 'my-find-tag-other-window) ; 标签导航: 使用etags跳转到符号定义(在新的分屏打开)
+(evil-define-key 'visual 'global (kbd "C-w ]") 'my-find-tag-other-window) ; 标签导航: 使用etags跳转到符号定义(在新的分屏打开)
 
 
 
 
 
 ;; 跳转过去,但是保持minibuffer打开的状态
-(define-key completion-list-mode-map [mouse-3] 'completion-mouse-choose-completion)
+(define-key completion-list-mode-map [mouse-3] 'completion-mouse-choose-completion) ; 补全: ?
 
 
 
@@ -882,7 +917,7 @@
 ;; 其它文件,其实通过文件夹链接更好
 ;; (setq counsel-etags-extra-tags-files '("/usr/include/TAGS" "/usr/local/include/TAGS"))
 
-;; 搜索高亮
+;; 搜 索高亮
 ;; C-x Spc 取消高亮
 (require 'highlight)
 (require 'evil-search-highlight-persist)
@@ -911,7 +946,7 @@ EVENT is the mouse event."
 
 
 (global-set-key [C-down-mouse-1] nil)
-(global-set-key [C-mouse-1] #'my-click-minibuffer-item)
+(global-set-key [C-mouse-1] #'my-click-minibuffer-item) ; 辅助: 点击打开项目但是不退出minibuffer
 
 ;; :TODO: C-x 的时候在命令行上会多出一个^符号出来
 
@@ -947,13 +982,13 @@ EVENT is the mouse event."
 ;; 书签
 ;; 变更一个书签就保存
 (setq bookmark-save-flag 1)
-(define-key evil-normal-state-map (kbd "\\ba") 'bookmark-set)
-(define-key evil-normal-state-map (kbd "\\bs") 'bookmark-save)
+(define-key evil-normal-state-map (kbd "\\ba") 'bookmark-set) ; 书签: 增加一个书签
+(define-key evil-normal-state-map (kbd "\\bs") 'bookmark-save) ; 书签: 保存书签
 ;; (define-key evil-normal-state-map (kbd "\\bj") 'bookmark-jump)
-(define-key evil-normal-state-map (kbd "\\bl") 'bookmark-bmenu-list)
-(define-key evil-normal-state-map (kbd "\\bx") 'bookmark-delete)
-(define-key evil-normal-state-map (kbd "\\bc") 'counsel-bookmark)
-(define-key evil-normal-state-map (kbd "\\bd") 'counsel-bookmarked-directory)
+(define-key evil-normal-state-map (kbd "\\bl") 'bookmark-bmenu-list) ;书签: 显示书签列表
+(define-key evil-normal-state-map (kbd "\\bx") 'bookmark-delete) ;书签: 删除当前书签
+(define-key evil-normal-state-map (kbd "\\bc") 'counsel-bookmark) ; 书签: 搜索书签
+(define-key evil-normal-state-map (kbd "\\bd") 'counsel-bookmarked-directory) ; 书签: 搜索目录书签
 
 ;; 高亮显示git变更
 (require 'diff-hl)
@@ -964,8 +999,8 @@ EVENT is the mouse event."
 ;; M-x revert-buffer 
 (require 'git-gutter+)
 (global-git-gutter+-mode)
-(evil-define-key 'normal global-map (kbd "[[") 'git-gutter+-previous-hunk)
-(evil-define-key 'normal global-map (kbd "]]") 'git-gutter+-next-hunk)
+(evil-define-key 'normal global-map (kbd "[[") 'git-gutter+-previous-hunk) ; git: 上一个修改点
+(evil-define-key 'normal global-map (kbd "]]") 'git-gutter+-next-hunk) ; git: 下一个修改点
 
 ; 虽然上面的插件比较老不过也够用,下面这个暂时屏蔽
 ; (global-git-gutter-mode +1)
@@ -1001,8 +1036,8 @@ EVENT is the mouse event."
 
 ;; 增加或者减小选区
 (require 'expand-region)
-(evil-define-key 'normal global-map (kbd "+") 'er/expand-region)
-(evil-define-key 'normal global-map (kbd "-") 'er/contract-region)
+(evil-define-key 'normal global-map (kbd "+") 'er/expand-region) ; 编辑: 普通模式扩大文本选区
+(evil-define-key 'normal global-map (kbd "-") 'er/contract-region) ; 编辑: 普通模式缩小文本选区
 
 ;; 文件对比
 (require 'vdiff)
@@ -1079,7 +1114,7 @@ EVENT is the mouse event."
 
 ;; 当前目录下打开windows的文件浏览器
 (require 'w32-browser)
-(define-key evil-normal-state-map (kbd "\\of") 'w32explore)
+(define-key evil-normal-state-map (kbd "\\of") 'w32explore) ; 其它: 打开文件浏览器
 
 ;; 浏览器中打开远程连接
 (defun git-get-current-branch-remote-url ()
@@ -1094,7 +1129,7 @@ EVENT is the mouse event."
          (middle-info (nth 0 (split-string middle-info ".git")))
          (get-adr (concat "https://" middle-info "/files?ref=" branch-name)))
     (browse-url get-adr)))
-(define-key evil-normal-state-map (kbd "\\i") 'git-get-current-branch-remote-url)
+(define-key evil-normal-state-map (kbd "\\i") 'git-get-current-branch-remote-url) ; git: 通过浏览器打开远程repo
 
 ;; emacs原生支持的occur和
 (defun my-occur ()
@@ -1106,12 +1141,11 @@ EVENT is the mouse event."
     (occur query)))
 
 ;; 直接跳到选区
-(evil-define-key 'normal global-map (kbd "\\oc") 'my-occur)
-(evil-define-key 'visual global-map (kbd "\\oc") 'my-occur)
-;; 原始的搜索
-(evil-define-key 'normal global-map (kbd "\\ooc") 'occur)
+(evil-define-key 'normal global-map (kbd "\\oc") 'my-occur) ; 搜索: 当前文件搜索当前单词
+(evil-define-key 'visual global-map (kbd "\\oc") 'my-occur) ; 搜索: 当前文件搜索当前单词
+(evil-define-key 'normal global-map (kbd "\\ooc") 'occur) ; 搜索: 手动搜索当前文件
 
-;; 自定义的项目搜索======{
+;; 自定义的项目搜 索======{
 ; 'word'    下划线不作为分隔符
 ; 'symbol'  下划线作为分隔符
 (defun my-ripgrep-search-no-confirm (&optional force-current-directory manual-input)
@@ -1146,12 +1180,12 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
   (interactive)
   (my-ripgrep-search-no-confirm nil t))
 
-(evil-define-key 'normal 'global (kbd "\\rg") 'my-ripgrep-search-no-confirm)
-(evil-define-key 'visual 'global (kbd "\\rg") 'my-ripgrep-search-no-confirm)
-(evil-define-key 'normal 'global (kbd "\\rcg") 'my-ripgrep-search-no-confirm-current-dir)
-(evil-define-key 'visual 'global (kbd "\\rcg") 'my-ripgrep-search-no-confirm-current-dir)
-(evil-define-key 'normal 'global (kbd "\\rmg") 'my-ripgrep-search-manual-input)
-(evil-define-key 'visual 'global (kbd "\\rmg") 'my-ripgrep-search-manual-input)
+(evil-define-key 'normal 'global (kbd "\\rg") 'my-ripgrep-search-no-confirm) ; 搜索: rg搜索整个项目
+(evil-define-key 'visual 'global (kbd "\\rg") 'my-ripgrep-search-no-confirm) ; 搜索: rg搜索整个项目
+(evil-define-key 'normal 'global (kbd "\\rcg") 'my-ripgrep-search-no-confirm-current-dir) ; 搜索: rg搜索当前目录
+(evil-define-key 'visual 'global (kbd "\\rcg") 'my-ripgrep-search-no-confirm-current-dir) ; 搜索: rg搜索当前目录
+(evil-define-key 'normal 'global (kbd "\\rmg") 'my-ripgrep-search-manual-input) ; 搜索: rg使用手动搜索指令
+(evil-define-key 'visual 'global (kbd "\\rmg") 'my-ripgrep-search-manual-input) ; 搜索: rg使用手动搜索指令
 
 ;; 定制ripgrep-regexp 的rg参数(这只是一个范例)
 ;; :TODO: 目前无法把默认的--ignore-case参数覆盖掉，没找到方法,其它参数也有类似问题
@@ -1163,25 +1197,25 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
                          (thing-at-point 'symbol))))
     (ripgrep-regexp (read-string (format "Enter search term (default \"%s\"): " default-term) nil nil default-term)
                     ;; "--hidden" "--no-ignore" "-C 5" "--heading"
-                    ;; 搜索隐藏文件 显示上下文 跟踪符号链接
+                    ;; 搜 索隐藏文件 显示上下文 跟踪符号链接
                     directory '("--hidden" "-C 5" "--follow"))))
 
-(define-key evil-normal-state-map (kbd "\\rsg") 'ripgrep-search-special)
-(define-key evil-visual-state-map (kbd "\\rsg") 'ripgrep-search-special)
+(define-key evil-normal-state-map (kbd "\\rsg") 'ripgrep-search-special) ; 搜索: rg使用手动搜索(搜索隐藏文件,显示上下文,跟踪符号连接)
+(define-key evil-visual-state-map (kbd "\\rsg") 'ripgrep-search-special) ; 搜索: rg使用手动搜索(搜索隐藏文件,显示上下文,跟踪符号连接)
 
 ;; find-name-dired(完整正则表达式)
-(define-key evil-normal-state-map (kbd "\\fnd") 'find-name-dired)
+(define-key evil-normal-state-map (kbd "\\fnd") 'find-name-dired) ; 搜索: 在一个目录下查找一个文件
 
 
 
-;; 其它的字符串查找(比较卡C-j可以跳到匹配的地方,优点是有交互式的模糊搜索)
+;; 其它的字符串查找(比较卡C-j可以跳到匹配的地方,优点是有交互式的模糊搜 索)
 ;; helm-projectile-grep
 ;; helm-projectile-rg无法显示数据，原因未知
-(define-key evil-normal-state-map (kbd "\\hpg") 'helm-projectile-grep)
-(define-key evil-visual-state-map (kbd "\\hpg") 'helm-projectile-grep)
+(define-key evil-normal-state-map (kbd "\\hpg") 'helm-projectile-grep) ; 搜索: 全项目模糊查找
+(define-key evil-visual-state-map (kbd "\\hpg") 'helm-projectile-grep) ; 搜索: 全项目模糊查找
 ;; 找到数据后可以按Tab键,但是跳转麻烦,作用并不明显
 
-;; 自定义的项目搜索======}
+;; 自定义的项目搜 索======}
 
 ;; 关闭除当前buffer外的所有buffer
 (defun kill-other-buffers-if-saved ()
@@ -1198,7 +1232,7 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
     (if unsaved-buffers
         (message "Cannot kill buffers: unsaved or special buffers exist.")
       (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))))
-(define-key evil-normal-state-map (kbd "\\kob") 'kill-other-buffers-if-saved)
+(define-key evil-normal-state-map (kbd "\\kob") 'kill-other-buffers-if-saved) ; 窗口管理: 关闭除当前buffer外的所有buffer(保存过的)
 
 ;; eshell
 ;; 定义一个函数，用来在下面的窗口中打开eshell
@@ -1216,8 +1250,8 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
   (kill-buffer "*eshell*")) ; 杀死名为*eshell*的buffer
 
 ;; 为evil的普通模式绑定快捷键
-(evil-define-key 'normal global-map (kbd "\\eo") 'bottom-side-eshell) ; \eo用来打开eshell
-(evil-define-key 'normal global-map (kbd "\\ex") 'kill-eshell-buffer) ; \ex用来关闭eshell
+(evil-define-key 'normal global-map (kbd "\\eo") 'bottom-side-eshell) ; 终端: 打开eshell
+(evil-define-key 'normal global-map (kbd "\\ex") 'kill-eshell-buffer) ; 终端: 关闭eshell
 
 
 (add-to-list 'load-path "C:/Users/pc/AppData/Roaming/.emacs.d/clue")
@@ -1225,8 +1259,8 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
 (require 'clue)
 (add-hook 'find-file-hook #'clue-auto-enable-clue-mode)
 
-(evil-define-key 'normal 'global (kbd "\\ccy") 'clue-copy)
-(evil-define-key 'normal 'global (kbd "\\ccp") 'clue-paste)
+(evil-define-key 'normal 'global (kbd "\\ccy") 'clue-copy) ; 标签导航: 拷贝clue链接
+(evil-define-key 'normal 'global (kbd "\\ccp") 'clue-paste) ; 标签导航: 赋值clue导航
 ;; evil 下可以直接 :!diagon Tree 这种方式调用外部程序
 
 
@@ -1237,20 +1271,20 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
   (require 'citre-config)
   ;; Bind your frequently used commands.  Alternatively, you can define them
   ;; in `citre-mode-map' so you can only use them when `citre-mode' is enabled.
-  (evil-define-key 'normal 'global (kbd "\\cj") 'citre-jump)
-  (evil-define-key 'normal 'global (kbd "\\cr") 'citre-jump-to-reference)
-  (evil-define-key 'normal 'global (kbd "\\cb") 'citre-jump-back)
-  (evil-define-key 'normal 'global (kbd "\\ca") 'citre-ace-peek)
-  (evil-define-key 'normal 'global (kbd "\\cp") 'citre-peek)
-  (evil-define-key 'normal 'global (kbd "\\cu") 'citre-update-this-tags-file)
-  (evil-define-key 'normal 'global (kbd "\\clp") 'citre-peek-paste-clue-link)
-  (evil-define-key 'normal 'global (kbd "\\cly") 'citre-peek-copy-clue-link)
+  (evil-define-key 'normal 'global (kbd "\\cj") 'citre-jump)                ; 标签导航: ctire跳转到定义
+  (evil-define-key 'normal 'global (kbd "\\cr") 'citre-jump-to-reference)   ; 标签导航: ctire跳转到引用(global gtags)
+  (evil-define-key 'normal 'global (kbd "\\cb") 'citre-jump-back)           ; 标签导航: citre跳转回退
+  (evil-define-key 'normal 'global (kbd "\\ca") 'citre-ace-peek)            ; 标签导航: citre 快速peek(通过屏幕上标记)
+  (evil-define-key 'normal 'global (kbd "\\cp") 'citre-peek)                ; 标签导航: citre 普通peek(当前的符号)
+  (evil-define-key 'normal 'global (kbd "\\cu") 'citre-update-this-tags-file) ; 标签导航: citre 更新ctags
+  (evil-define-key 'normal 'global (kbd "\\clp") 'citre-peek-paste-clue-link) ; 标签导航: citre 粘贴当前的clue链接
+  (evil-define-key 'normal 'global (kbd "\\cly") 'citre-peek-copy-clue-link)  ; 标签导航: citre 拷贝当前clue链接
   
   ;; 让evil的左右键失效,这样才能使用citre-peek的左右键还有分支查看
-  (define-key evil-motion-state-map (kbd "<left>") nil)
-  (define-key evil-motion-state-map (kbd "<right>") nil)
-  (define-key evil-motion-state-map (kbd "<up>") nil)
-  (define-key evil-motion-state-map (kbd "<down>") nil)
+  (define-key evil-motion-state-map (kbd "<left>") nil)  ; 标签导航: 左右键用于横向移动导航列表
+  (define-key evil-motion-state-map (kbd "<right>") nil) ; 标签导航: 左右键用于横向移动导航列表
+  (define-key evil-motion-state-map (kbd "<up>") nil)    ; 标签导航: 上下键用于纵向移动导航列表
+  (define-key evil-motion-state-map (kbd "<down>") nil)  ; 标签导航: 上下键用于纵向移动导航列表
   
   ; 这里的使用方法是这样的
   ; M-l p 会出现跳转的关键字，然后按相应的快捷键执行跳转(跳转peek窗口中的符号)
@@ -1305,19 +1339,19 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
   ;
   ; 生成的TAGS是etags的文件，不能用于这里
   ;
-  ; M-n, M-p: Next/prev line.                 ok
-  ; M-N, M-P: Next/prev definition.           ok(如果一个定义在多个源文件中,这里可以选择我们想要的那一个,然后按M-l f把它设置为第一个，然后就可以来回跳转了)
-  ; M-l j: Jump to the definition.            ok
-  ; M-l p: citre-peek-through                 ok
-  ; C-g: Close the peek window.               ok
-  ; C-l: 光标放到中央                         ok
-  ; <left>和<right> 在标记历史记录中移动
-  ; S-<up>和S-<down> 上下移动定义
-  ; M-l f 设定为第一个定义
-  ; M-l d 删除符号后的当前分支                ok
-  ; M-l D 删除符号后的所有分支                ok
-  ; citre-peek-save-session 只在当前session有效,并不保存磁盘
-  ; citre-peek-load-session 只在当前session有效,并不保存磁盘
+  ; M-n, M-p: Next/prev line.                 ; 标签导航: citre peek窗口下滚上滚一行
+  ; M-N, M-P: Next/prev definition.           ; 标签导航: citre 如果一个定义在多个源文件中,这里可以选择我们想要的那一个,然后按M-l f把它设置为第一个，然后就可以来回跳转了
+  ; M-l j: Jump to the definition.            ; 标签导航: citre 跳转到当前的peek符号的定义处
+  ; M-l p: citre-peek-through                 ; 标签导航: citre 在peek窗口中搜索一个锚点用于下次跳转
+  ; C-g: Close the peek window.               ; 标签导航: citre 关闭peek窗口
+  ; C-l: 光标放到中央                         ; 标签导航: citre 让当前的光标在屏幕的中央
+  ; <left>和<right> 在标记历史记录中移动      ; 标签导航: citre 左右浏览标记树
+  ; S-<up>和S-<down> 上下移动定义             ; 标签导航: citre 上下移动定义
+  ; M-l f 设定为第一个定义                    ; 标签导航: citre 当前定义设置为第一个定义
+  ; M-l d 删除符号后的当前分支                ; 标签导航: citre 删除符号后的当前分支
+  ; M-l D 删除符号后的所有分支                ; 标签导航: citre 删除符号后的所有分支
+  ; citre-peek-save-session ; 标签导航: 只在当前session有效,并不保存磁盘 ; 标签导航: citre 拷贝当前clue链接
+  ; citre-peek-load-session ; 标签导航: 只在当前session有效,并不保存磁盘 ; 标签导航: citre 拷贝当前clue链接
   
   ;citre-peek-save-session
   ;citre-peek-paste-clue-link
@@ -1380,15 +1414,15 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
     (let ((map (make-sparse-keymap)))
       ;; (define-key map (kbd "C-`") 'winum-select-window-by-number)
       ;; (define-key map (kbd "C-2") 'winum-select-window-by-number)
-      (define-key map (kbd "C-0") 'winum-select-window-0-or-10)
-      (define-key map (kbd "C-1") 'winum-select-window-1)
-      (define-key map (kbd "C-2") 'winum-select-window-2)
-      (define-key map (kbd "C-3") 'winum-select-window-3)
-      (define-key map (kbd "C-4") 'winum-select-window-4)
-      (define-key map (kbd "C-5") 'winum-select-window-5)
-      (define-key map (kbd "C-6") 'winum-select-window-6)
-      (define-key map (kbd "C-7") 'winum-select-window-7)
-      (define-key map (kbd "C-8") 'winum-select-window-8)
+      (define-key map (kbd "C-0") 'winum-select-window-0-or-10) ; 窗口管理: 跳转到屏幕0
+      (define-key map (kbd "C-1") 'winum-select-window-1)       ; 窗口管理: 跳转到屏幕1
+      (define-key map (kbd "C-2") 'winum-select-window-2)       ; 窗口管理: 跳转到屏幕2
+      (define-key map (kbd "C-3") 'winum-select-window-3)       ; 窗口管理: 跳转到屏幕3
+      (define-key map (kbd "C-4") 'winum-select-window-4)       ; 窗口管理: 跳转到屏幕4
+      (define-key map (kbd "C-5") 'winum-select-window-5)       ; 窗口管理: 跳转到屏幕5
+      (define-key map (kbd "C-6") 'winum-select-window-6)       ; 窗口管理: 跳转到屏幕6
+      (define-key map (kbd "C-7") 'winum-select-window-7)       ; 窗口管理: 跳转到屏幕7
+      (define-key map (kbd "C-8") 'winum-select-window-8)       ; 窗口管理: 跳转到屏幕8
       map))
 (require 'winum)
 (winum-mode)
@@ -1412,9 +1446,9 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
                                                   (message "Switching to DokuWiki mode.")
                                                   (dokuwiki-mode)))))
 
-(evil-define-key 'normal global-map (kbd "\\dwx") 'dokuwiki-remove-inline-images)
-(evil-define-key 'normal global-map (kbd "\\dwr") 'dokuwiki-refresh-inline-images)
-(evil-define-key 'normal global-map (kbd "\\dwm") 'dokuwiki-toggle-markup-hiding)
+(evil-define-key 'normal global-map (kbd "\\dwx") 'dokuwiki-remove-inline-images)  ; zim: 屏蔽图片显示
+(evil-define-key 'normal global-map (kbd "\\dwr") 'dokuwiki-refresh-inline-images) ; zim: 刷新图片显示
+(evil-define-key 'normal global-map (kbd "\\dwm") 'dokuwiki-toggle-markup-hiding)  ; zim: 切换markup标记的显示与隐藏
 
 (defun open-web-link-at-point ()
   "Open the web link under point in the default web browser."
@@ -1423,7 +1457,7 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
     (when url
       (browse-url url))))
 
-(evil-define-key 'normal 'global (kbd "\\wol") 'open-web-link-at-point)
+(evil-define-key 'normal 'global (kbd "\\wol") 'open-web-link-at-point) ;其它: 通过浏览器打开当前链接
 
 (defun open-web-link-or-file-in-visual-mode ()
   "Open the web link or local file in visual mode in the default web browser or Emacs."
@@ -1436,7 +1470,7 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
         ;; Otherwise, open it in the default web browser
         (browse-url url)))))
 
-(evil-define-key 'visual 'global (kbd "\\wol") 'open-web-link-or-file-in-visual-mode)
+(evil-define-key 'visual 'global (kbd "\\wol") 'open-web-link-or-file-in-visual-mode) ;其它: 通过浏览器或者emacs打开当前链接
 
 (defun open-web-link-or-file-in-visual-mode-windows ()
   "Open the web link or local file in visual mode in the default web browser or the default program on Windows."
@@ -1455,12 +1489,12 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
           ;; Otherwise, open it in the default web browser
           (browse-url url))))))
 
-(evil-define-key 'visual 'global (kbd "\\wwl") 'open-web-link-or-file-in-visual-mode-windows)
+(evil-define-key 'visual 'global (kbd "\\wwl") 'open-web-link-or-file-in-visual-mode-windows) ;其它: 通过默认的程序打开当前链接
 
 
 
 ;; 通过gvim来打开当前文件，并定位到当前的行
-(evil-define-key 'normal 'global (kbd "\\ov")
+(evil-define-key 'normal 'global (kbd "\\ov") ;辅助: 通过gvim打开当前文件的当前行
   (lambda ()
     (interactive)
     (let ((line-number (number-to-string (line-number-at-pos)))
@@ -1472,7 +1506,7 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
   "Revert buffer without confirmation."
   (interactive)
   (revert-buffer :ignore-auto :noconfirm))
-(global-set-key (kbd "C-c r") 'revert-buffer-no-confirm)
+(global-set-key (kbd "C-c r") 'revert-buffer-no-confirm) ; 文件: 重新加载当前文件
 
  (use-package dired-subtree
   :ensure t
@@ -1502,7 +1536,7 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
 (add-to-list 'project-find-functions #'locate-local-project-root)
 
 ; 打开ibuffer
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-x C-b") 'ibuffer) ; 文件:ibuffer 打开ibuffer列表
 (defun auto-refresh-ibuffer (&optional frame)
   (when (and (get-buffer "*Ibuffer*")
              (get-buffer-window "*Ibuffer*"))
@@ -1513,6 +1547,7 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
         (message "auto-refresh-ibuffer function called")))))
 (add-hook 'buffer-list-update-hook 'auto-refresh-ibuffer)
 
+; o 文件:ibuffer 在ibuffer列表中使用分屏打开文件
 
 ; 默认设置水平滚动条和不换行
 ; (setq truncate-lines t)
@@ -1529,7 +1564,7 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
         (setq truncate-lines nil)
         (horizontal-scroll-bar-mode -1))))
 ; 切换换行和不换行
-(global-set-key (kbd "C-c w") 'toggle-wrap-and-hscroll)
+(global-set-key (kbd "C-c w") 'toggle-wrap-and-hscroll) ; 辅助: 切换是否自动换行和横向滚动条
 
 ; https://emacs.stackexchange.com/questions/52411/evil-star-visualstar-without-moving-the-cursor
 (evil-select-search-module 'evil-search-module 'evil-search)
@@ -1559,24 +1594,30 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
       ;   (isearch (evil-search-previous)))
       (goto-char (max (1- orig-pos) (point-min))))))  ; Move cursor one character back
 
-(evil-define-key 'normal global-map (kbd "*") 'my/star-keep-position)
-(evil-define-key 'visual evil-visualstar-mode-map (kbd "*") 'my/visualstar-keep-position)
+(evil-define-key 'normal global-map (kbd "*") 'my/star-keep-position) ; 搜索: 快速搜索
+(evil-define-key 'visual evil-visualstar-mode-map (kbd "*") 'my/visualstar-keep-position) ; 搜索: 快速搜索
 (defun my/clear-search-highlight ()
   "Clears the search highlight."
   (interactive)
   (evil-ex-nohighlight))
-(evil-define-key 'normal global-map (kbd "#") 'my/clear-search-highlight)
+(evil-define-key 'normal global-map (kbd "#") 'my/clear-search-highlight) ; 搜索: 清除快速搜索高亮
 
 (require 'windresize)
-(global-set-key (kbd "<f5>") 'windresize)
+(global-set-key (kbd "<f5>") 'windresize) ; 窗口管理: 重新调整窗口大小(步长1,直接操作方向键)
+; 窗口大小调整
+(global-set-key (kbd "S-C-<left>") (lambda () (interactive) (shrink-window-horizontally 5))) ; 窗口管理: 缩小窗口宽度(5步长)
+(global-set-key (kbd "S-C-<right>") (lambda () (interactive) (enlarge-window-horizontally 5))) ; 窗口管理: 增大窗口宽度(5步长)
+(global-set-key (kbd "S-C-<down>") (lambda () (interactive) (shrink-window 5))) ; 窗口管理: 缩小窗口高度(5步长)
+(global-set-key (kbd "S-C-<up>") (lambda () (interactive) (enlarge-window 5))) ; 窗口管理: 增大窗口高度(5步长)
 
-; 在状态栏显示搜索数量和标号(:TODO:目前发现并没有效果,可能被别的东西覆盖)
+
+; 在状态栏显示搜 索数量和标号(:TODO:目前发现并没有效果,可能被别的东西覆盖)
 (with-eval-after-load 'evil
   (require 'evil-anzu))
 ; 窗口的重做和撤销模式
 (winner-mode 1)
-(global-set-key (kbd "<f6>") 'winner-undo)
-(global-set-key (kbd "<f7>") 'winner-redo)
+(global-set-key (kbd "<f6>") 'winner-undo) ; undo: 窗口布局undo
+(global-set-key (kbd "<f7>") 'winner-redo) ; undo: 窗口布局redo
 
 ; 在当前的缓冲区中把所有的TAB转换为空格
 ; (untabify (point-min) (point-max))
@@ -1593,7 +1634,7 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
 (evil-vimish-fold-mode 1)
 
 ; 格式化选定区域
-(evil-define-key 'normal global-map (kbd "TAB") 'evil-indent)
+(evil-define-key 'normal global-map (kbd "TAB") 'evil-indent) ; 格式化: 格式化选定区域
 
 
 ;; 禁用启动屏幕
@@ -1603,7 +1644,7 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
 (recentf-mode 1)
 (setq recentf-max-menu-items 100)
 (setq recentf-max-saved-items 100)
-(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+(global-set-key "\C-x\ \C-r" 'recentf-open-files) ; 文件: 打开最近打开文件列表
 
 (defun check-file-or-show-recent ()
   (unless (buffer-file-name)
@@ -1619,4 +1660,4 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(zim-wiki-mode yasnippet winum windresize whitespace-cleanup-mode which-key w32-browser vdiff-magit undo-fu symbol-overlay spaceline rainbow-delimiters projectile-ripgrep pkg-info neotree modus-themes markdown-mode impatient-mode imenu-list highlight-symbol helm-rg git-gutter git-gutter+ ggtags flymake-shellcheck find-file-in-project expand-region evil-visualstar evil-visual-mark-mode evil-vimish-fold evil-surround evil-search-highlight-persist evil-matchit evil-lion evil-commentary evil-anzu elscreen dired-subtree diff-hl counsel-etags corfu citre back-button all-the-icons-nerd-fonts ac-etags)))
+   '(@ zim-wiki-mode yasnippet winum windresize whitespace-cleanup-mode which-key w32-browser vdiff-magit undo-fu symbol-overlay spaceline rainbow-delimiters projectile-ripgrep pkg-info neotree modus-themes markdown-mode impatient-mode imenu-list highlight-symbol helm-rg git-gutter git-gutter+ ggtags flymake-shellcheck find-file-in-project expand-region evil-visualstar evil-visual-mark-mode evil-vimish-fold evil-surround evil-search-highlight-persist evil-matchit evil-lion evil-commentary evil-anzu elscreen dired-subtree diff-hl counsel-etags corfu citre back-button all-the-icons-nerd-fonts ac-etags)))
