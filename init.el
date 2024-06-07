@@ -335,6 +335,16 @@
 ;; 
 ;; (add-hook 'after-init-hook 'global-whitespace-mode)
 
+(require 'whitespace)
+(setq whitespace-style '(face tabs))
+(setq whitespace-display-mappings
+  ;; all numbers are Unicode codepoint in decimal. try (insert-char 182 1)
+  '(
+    (tab-mark 9 [8594 9] [92 9]) ; 9 TAB, 92 is '\' in decimal
+  ))
+(setq whitespace-tab '(:background "yellow" :foreground "black"))
+(global-whitespace-mode 1)
+
 ;; 选择所有的文本
 (global-set-key (kbd "C-a") 'mark-whole-buffer)
 
