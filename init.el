@@ -44,7 +44,7 @@
 ;; program
 
 
-;; conceal-rg 可以搜索中文
+;; conceal-rg 可以搜 索中文
 (add-to-list 'process-coding-system-alist '("rg" utf-8 . gbk))
 
 ;; 中文编码问题的魔幻处理方法(https://emacs-china.org/t/counsel-rg-win10/12474/15)
@@ -335,6 +335,7 @@
 ;; 
 ;; (add-hook 'after-init-hook 'global-whitespace-mode)
 
+;; 设置TAB符号的显示颜色
 (require 'whitespace)
 (setq whitespace-style '(face tabs))
 (setq whitespace-display-mappings
@@ -342,7 +343,7 @@
   '(
     (tab-mark 9 [8594 9] [92 9]) ; 9 TAB, 92 is '\' in decimal
   ))
-(setq whitespace-tab '(:background "yellow" :foreground "black"))
+(setq whitespace-tab '(:background "#F0F8FF" :foreground "black")) ; 设置为很淡很淡的蓝色
 (global-whitespace-mode 1)
 
 ;; 选择所有的文本
