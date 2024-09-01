@@ -1510,7 +1510,9 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
     (interactive)
     (let ((line-number (number-to-string (line-number-at-pos)))
           (file-name (encode-coding-string (buffer-file-name) 'gb2312)))
-      (start-process "gvim" nil "gvim" (concat "+" line-number) file-name))))
+      ; (start-process "gvim" nil "gvim" (concat "+" line-number) file-name))))
+      ; 在已有的实体中打开文件而不是总开一个新实例
+      (start-process "gvim" nil "gvim" "--remote" (concat "+" line-number) file-name))))
 
 
 (defun revert-buffer-no-confirm ()
@@ -1647,6 +1649,194 @@ If MANUAL-INPUT is non-nil, prompt for the search term and directory."
 ; 格式化选定区域
 (evil-define-key 'normal global-map (kbd "TAB") 'evil-indent) ; 格式化: 格式化选定区域
 
+
+
+
+(defun get-relation-path ()
+  "获取当前文件的相对路径和行号"
+  (let* ((absolute-path (buffer-file-name))
+         (absolute-path (replace-regexp-in-string "\\\\" "/" absolute-path))
+         (root-dir (find-root-dir)))
+    (if (string= root-dir "")
+        (progn
+          (message "未找到项目根目录")
+          "")
+      (substring absolute-path (length root-dir)))))
+
+; (defun record-code-path-and-line-to-system-reg ()
+;   (interactive)
+;   "把当前的相对路径和行号信息保存到系统剪切板中"
+;   (let* ((relative-path (get-relation-path))
+;          (line-number (line-number-at-pos))
+;          (result (format "[{[%s:%d]}]" relative-path line-number)))
+;     (unless (string= relative-path "")
+;       (kill-new result))))
+
+(defun find-root-dir ()
+  "查找项目根目录"
+  (let ((current-dir (file-name-directory (buffer-file-name))))
+    (setq current-dir (replace-regexp-in-string "\\\\" "/" current-dir))
+    (while (and (not (string= current-dir "/"))
+                (not (string-match-p "^[A-Za-z]:/$" current-dir))
+                (not (or (file-directory-p (concat current-dir ".git"))
+                         (file-exists-p (concat current-dir ".root")))))
+      (setq current-dir (file-name-directory (directory-file-name current-dir))))
+    (if (string= current-dir "/")
+        ""
+      current-dir)))
+
+
+; file-name-directory 文件路径提取目录
+; expand-file-name 路径扩展为绝对路径
+; buffer-file-name 当前buffer的完整路径
+; directory-file-name 让目录以斜杠结尾
+(defun FindCustomDir (target-path)
+  "查找自定义目录"
+  (let* ((current-dir (file-name-directory (buffer-file-name)))
+         (full-path (expand-file-name target-path current-dir)))
+    (while (and (not (file-exists-p full-path)) 
+                (not (string-match-p "^[A-Za-z]:/$" current-dir)) 
+                (not (string= current-dir "/")))
+      (setq current-dir (file-name-directory (directory-file-name current-dir)))
+      (setq full-path (expand-file-name target-path current-dir)))
+    (if (file-exists-p full-path)
+        current-dir
+      "")))
+
+(defun GetCurrentFileAndPath ()
+  "获取当前文件的绝对路径"
+  (buffer-file-name))
+
+(defun GetCurrentPath ()
+  "获取当前文件的绝对路径（不包含文件名）"
+  (file-name-directory (buffer-file-name)))
+
+
+; 因为vim上使用了另外的实现,emacs暂时不实现了(方案已经变更)
+(defun jump-to-code ()
+  (interactive)
+  "代码笔记跳转功能"
+  (let ((line (thing-at-point 'line t))
+        (col (length (encode-coding-string (buffer-substring (line-beginning-position) (point)) 'utf-8)))
+        (start 0)
+        (is-find-position nil)
+        (match nil))
+        (while (and (not is-find-position) (string-match "\\[{\\[\\([^];\\[{}]*\\);\\([0-9]+\\)\\]}\\]" line start))
+          (let ((match-str (match-string 0 line))
+                (match-start (match-beginning 0))
+                (match-end (match-end 0)))
+                (when (and match-start match-end)
+                  (let ((match-start-byte (length (encode-coding-string (substring line 0 match-start) 'utf-8)))
+                        (match-end-byte (length (encode-coding-string (substring line 0 match-end) 'utf-8))))
+                    (if (and (>= col match-start-byte) (< col match-end-byte))
+                        (setq match t
+                              is-find-position t)
+                      (setq start match-end))))))
+
+        (if (not match)
+            (message "光标不在有效的路径和行号范围内")
+
+      (let* ((match-str (match-string 0 line))
+             (relative-path (match-string 1 line))
+             (line-number (string-to-number (match-string 2 line)))
+             (full-path
+              (cond
+               ((string-empty-p relative-path)
+                (GetCurrentFileAndPath))
+               ((string-prefix-p "+" relative-path)
+                (concat (GetCurrentPath) "/" (substring relative-path 1)))
+               (t
+                ; (message "relative-path: %s" relative-path)
+                ; 如果let定义的后面的变量对前面的变量有依赖关系,必须加*号
+                (let* ((father-dir-name (car (split-string relative-path "/")))
+                      (father-path (FindCustomDir relative-path)))
+                  (if (string-empty-p father-path)
+                      (progn
+                        (message "get father path is null")
+                        (return))
+                    (concat father-path "/" relative-path)))
+                ))))
+
+      ; (message "full-path: %s" full-path)
+        (if (file-exists-p full-path)
+            (progn
+              (if (= (length (window-list)) 1)
+                  (split-window-right)
+                (let ((left-window (window-in-direction 'left)))
+                  (if left-window
+                      (progn
+                        (select-window left-window)
+                        (walk-windows
+                         (lambda (w)
+                           (when (eq (window-in-direction 'below w) nil)
+                             (select-window w)))
+                         nil 'left)
+                        (split-window nil nil 'above))
+                    (split-window-right))))
+              (find-file full-path)
+              (goto-line line-number))
+          (message "文件不存在: %s" full-path))
+        ))))
+
+(defun jump-to-hunk-point ()
+  (interactive)
+  "通过锚点链接跳转到锚点"
+  (let ((line (thing-at-point 'line t))
+        (col (length (encode-coding-string (buffer-substring (line-beginning-position) (point)) 'utf-8)))
+        (start 0)
+        (is-find-position nil)
+        (match nil))
+        (while (and (not is-find-position) (string-match "\\[{\\[\\([^];#{}\\[]*\\);#\\([^];#{}\\[]+\\)\\]}\\]" line start))
+          (let ((match-str (match-string 0 line))
+                (match-start (match-beginning 0))
+                (match-end (match-end 0)))
+                (when (and match-start match-end)
+                  (let ((match-start-byte (length (encode-coding-string (substring line 0 match-start) 'utf-8)))
+                        (match-end-byte (length (encode-coding-string (substring line 0 match-end) 'utf-8))))
+                    (if (and (>= col match-start-byte) (< col match-end-byte))
+                        (setq match t
+                              is-find-position t)
+                      (setq start match-end))))))
+
+        (if (not match)
+            (message "光标不在有效的路径和行号范围内")
+
+        (let* ((match-str (match-string 0 line))
+             (relative-path (match-string 1 line))
+             (cur-path (replace-regexp-in-string "\\\\" "/" (expand-file-name (buffer-file-name))))
+             (hunk-str (concat "{[{id:"(match-string 2 line)"}]}" ))
+             (full-path
+              (cond
+               ((string-empty-p relative-path)
+                (GetCurrentFileAndPath))
+               ((string-prefix-p "+" relative-path)
+                (concat (GetCurrentPath) "/" (substring relative-path 1)))
+               (t
+                ; (message "relative-path: %s" relative-path)
+                ; 如果let定义的后面的变量对前面的变量有依赖关系,必须加*号
+                (let* ((father-dir-name (car (split-string relative-path "/")))
+                      (father-path (FindCustomDir relative-path)))
+                  (if (string-empty-p father-path)
+                      (progn
+                        (message "get father path is null")
+                        (return))
+                    (concat father-path "/" relative-path)))
+                ))))
+
+      ; (message "full-path: %s" full-path)
+        (if (file-exists-p full-path)
+            (progn
+              (find-file full-path)
+              (goto-char (point-min))
+              (search-forward hunk-str nil t))
+          (message "文件不存在: %s" full-path))
+        ))))
+
+
+(evil-define-key 'normal 'global (kbd "\\jj") 'jump-to-code) ;其它: 跳转到标记代码
+(evil-define-key 'normal 'global (kbd "\\jh") 'jump-to-hunk-point) ;其它: 跳转到勾子点
+; (evil-define-key 'normal 'global (kbd "\\jl") 'record-code-path-and-line-to-system-reg) ;其它: 记录当前代码行和路径到系统剪切板
+; :TODO: RecordHunkToSystemReg 其实这个功能在vim中实现就够了,不需要在emacs中实现
 
 ;; 禁用启动屏幕
 (setq inhibit-startup-screen t)
